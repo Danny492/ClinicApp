@@ -292,7 +292,7 @@ export class Crud implements OnInit {
                     severity: 'success',
                     summary: 'Successful',
                     detail: 'Products Deleted',
-                    life: 3000
+                    life: 1500
                 });
             }
         });
@@ -315,7 +315,7 @@ export class Crud implements OnInit {
                     severity: 'success',
                     summary: 'Successful',
                     detail: 'Product Deleted',
-                    life: 3000
+                    life: 1500
                 });
             }
         });
@@ -366,7 +366,7 @@ export class Crud implements OnInit {
                     severity: 'success',
                     summary: 'Successful',
                     detail: 'Product Updated',
-                    life: 3000
+                    life: 1500
                 });
             } else {
                 this.product.id = this.createId();
@@ -375,7 +375,7 @@ export class Crud implements OnInit {
                     severity: 'success',
                     summary: 'Successful',
                     detail: 'Product Created',
-                    life: 3000
+                    life: 1500
                 });
                 this.products.set([..._products, this.product]);
             }

@@ -81,9 +81,9 @@ export class AppMenu {
                         routerLink: ['/pages/crud']
                     },
                     {
-                        label: 'Paciente',
-                        icon: 'pi pi-fw pi-user',
-                        routerLink: ['/pages/paciente']
+                        label: 'Pacientes',
+                        icon: 'pi pi-fw pi-users',
+                        routerLink: ['/pages/pacientes']
                     },
                     {
                         label: 'Not Found',
