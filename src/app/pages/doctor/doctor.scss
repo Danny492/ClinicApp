@@ -1,0 +1,193 @@
+/* Estilos específicos para el componente de doctores */
+.doctor-form-dialog {
+  .p-dialog-content {
+    max-height: 80vh;
+    overflow-y: auto;
+  }
+}
+
+.doctor-details-dialog {
+  .p-dialog-content {
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+  
+  .p-dialog-content > div {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+  }
+  
+  .p-dialog-content .bg-surface-0,
+  .p-dialog-content .dark\\:bg-surface-900 {
+    margin-bottom: 0;
+  }
+  
+  .p-dialog-footer {
+    margin-top: 0;
+    padding-top: 1rem;
+  }
+}
+
+/* Estilos para la tabla de doctores */
+.p-datatable {
+  .p-datatable-header {
+    background: var(--surface-card);
+    border: 1px solid var(--surface-border);
+  }
+  
+  .p-datatable-tbody > tr:hover {
+    background: var(--surface-hover);
+  }
+}
+
+/* Estilos para los formularios de horarios */
+.schedule-form-item {
+  border: 1px solid var(--surface-border);
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 0.75rem;
+  background: var(--surface-card);
+  
+  &:hover {
+    border-color: var(--primary-color);
+  }
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .doctor-form-dialog .p-dialog {
+    width: 95vw !important;
+    max-width: none !important;
+    margin: 0.5rem !important;
+  }
+  
+  .grid-cols-12 > div {
+    grid-column: span 12 !important;
+  }
+  
+  .grid-cols-12 .col-span-6 {
+    grid-column: span 12 !important;
+  }
+  
+  .grid-cols-12 .col-span-3 {
+    grid-column: span 12 !important;
+  }
+  
+  .p-toolbar {
+    flex-direction: column;
+    gap: 1rem;
+    
+    .p-toolbar-group-start,
+    .p-toolbar-group-end {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+  
+  .p-datatable {
+    .p-datatable-header {
+      flex-direction: column;
+      gap: 1rem;
+      
+      .p-datatable-header-left,
+      .p-datatable-header-right {
+        width: 100%;
+      }
+    }
+  }
+}
+
+/* Estilos para los tags de estado de horarios */
+.p-tag {
+  font-size: 0.75rem;
+  padding: 0.25rem 0.5rem;
+}
+
+/* Animaciones suaves */
+.p-dialog {
+  transition: all 0.3s ease;
+}
+
+.p-button {
+  transition: all 0.2s ease;
+}
+
+/* Estilos para el tema oscuro */
+.dark {
+  .schedule-form-item {
+    background: var(--surface-900);
+    border-color: var(--surface-700);
+  }
+  
+  .p-datatable {
+    .p-datatable-header {
+      background: var(--surface-900);
+      border-color: var(--surface-700);
+    }
+    
+    .p-datatable-tbody > tr {
+      background: var(--surface-800);
+      border-color: var(--surface-700);
+      
+      &:hover {
+        background: var(--surface-700);
+      }
+    }
+  }
+  
+  .p-dialog {
+    .p-dialog-header {
+      background: var(--surface-900);
+      border-color: var(--surface-700);
+    }
+    
+    .p-dialog-content {
+      background: var(--surface-900);
+    }
+  }
+  
+  .p-toolbar {
+    background: var(--surface-900);
+    border-color: var(--surface-700);
+  }
+}
+
+/* Estilos adicionales para mejorar la accesibilidad */
+.p-button:focus,
+.p-inputtext:focus,
+.p-select:focus {
+  outline: 2px solid var(--primary-color);
+  outline-offset: 2px;
+}
+
+/* Estilos para los horarios en el modal de detalles */
+.doctor-details-dialog {
+  .horario-item {
+    transition: all 0.2s ease;
+    
+    &:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+  }
+}
+
+/* Mejoras para la tabla en dispositivos pequeños */
+@media (max-width: 640px) {
+  .p-datatable {
+    .p-datatable-tbody > tr > td {
+      padding: 0.5rem;
+      font-size: 0.875rem;
+    }
+    
+    .p-button {
+      padding: 0.25rem;
+      min-width: auto;
+    }
+  }
+}

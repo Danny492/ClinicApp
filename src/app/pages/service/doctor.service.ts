@@ -11,7 +11,7 @@ export interface DoctorSchedule {
 export interface Doctor {
     id?: string;
     nombre: string;
-    cedula: string;
+    codigo: string;
     especialidad: string;
     correo: string;
     telefono: string;
@@ -25,7 +25,7 @@ export class DoctorService {
         {
             id: '1',
             nombre: 'Dr. Carlos Mendoza',
-            cedula: '001-1234567-8',
+            codigo: 'UDR001',
             especialidad: 'Cardiología',
             correo: 'carlos.mendoza@clinicapp.com',
             telefono: '809-555-0101',
@@ -41,7 +41,7 @@ export class DoctorService {
         {
             id: '2',
             nombre: 'Dra. Ana García',
-            cedula: '002-2345678-9',
+            codigo: 'UDR002',
             especialidad: 'Pediatría',
             correo: 'ana.garcia@clinicapp.com',
             telefono: '809-555-0102',
@@ -56,7 +56,7 @@ export class DoctorService {
         {
             id: '3',
             nombre: 'Dr. Roberto Silva',
-            cedula: '003-3456789-0',
+            codigo: 'UDR003',
             especialidad: 'Neurología',
             correo: 'roberto.silva@clinicapp.com',
             telefono: '809-555-0103',
@@ -70,7 +70,7 @@ export class DoctorService {
         {
             id: '4',
             nombre: 'Dra. María López',
-            cedula: '004-4567890-1',
+            codigo: 'UDR004',
             especialidad: 'Ginecología',
             correo: 'maria.lopez@clinicapp.com',
             telefono: '809-555-0104',
@@ -84,7 +84,7 @@ export class DoctorService {
         {
             id: '5',
             nombre: 'Dr. José Ramírez',
-            cedula: '005-5678901-2',
+            codigo: 'UDR005',
             especialidad: 'Ortopedia',
             correo: 'jose.ramirez@clinicapp.com',
             telefono: '809-555-0105',
@@ -201,11 +201,11 @@ export class DoctorService {
         });
     }
 
-    isCedulaUnique(cedula: string, excludeId?: string): Promise<boolean> {
+    isCodigoUnique(codigo: string, excludeId?: string): Promise<boolean> {
         return new Promise((resolve) => {
             setTimeout(() => {
                 const exists = this.doctors.some(d => 
-                    d.cedula === cedula && 
+                    d.codigo === codigo && 
                     d.id !== excludeId
                 );
                 resolve(!exists);
@@ -232,6 +232,20 @@ export class DoctorService {
             id += chars.charAt(Math.floor(Math.random() * chars.length));
         }
         return id;
+    }
+
+    generateCodigoUDR(): string {
+        // Encontrar el próximo número disponible
+        const existingCodes = this.doctors.map(d => d.codigo);
+        let nextNumber = 1;
+        
+        while (true) {
+            const newCode = `UDR${nextNumber.toString().padStart(3, '0')}`;
+            if (!existingCodes.includes(newCode)) {
+                return newCode;
+            }
+            nextNumber++;
+        }
     }
 
     generateScheduleId(): string {
