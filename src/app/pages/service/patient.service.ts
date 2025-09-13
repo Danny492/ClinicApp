@@ -18,7 +18,7 @@ export class PatientService {
         {
             id: '1',
             nombreCompleto: 'Juan Pérez García',
-            cedula: '12345678',
+            cedula: '128-0023456-9',
             fechaNacimiento: new Date('1990-05-15'),
             genero: 'Masculino',
             direccion: 'Calle 123 #45-67, Bogotá',
@@ -29,7 +29,7 @@ export class PatientService {
         {
             id: '2',
             nombreCompleto: 'María González López',
-            cedula: '87654321',
+            cedula: '031-4567890-2',
             fechaNacimiento: new Date('1985-08-22'),
             genero: 'Femenino',
             direccion: 'Carrera 45 #78-90, Medellín',
@@ -40,7 +40,7 @@ export class PatientService {
         {
             id: '3',
             nombreCompleto: 'Carlos Rodríguez Martínez',
-            cedula: '11223344',
+            cedula: '402-0922985-1',
             fechaNacimiento: new Date('1992-12-10'),
             genero: 'Masculino',
             direccion: 'Avenida 80 #12-34, Cali',
