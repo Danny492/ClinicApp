@@ -463,7 +463,7 @@ export class Paciente implements OnInit {
                     severity: 'success',
                     summary: 'Éxito',
                     detail: 'Pacientes eliminados correctamente',
-                    life: 3000
+                    life: 1500
                 });
             }
         });
@@ -488,7 +488,7 @@ export class Paciente implements OnInit {
                             severity: 'success',
                             summary: 'Éxito',
                             detail: 'Paciente eliminado correctamente',
-                            life: 3000
+                            life: 1500
                         });
                     }
                 });
@@ -519,7 +519,7 @@ export class Paciente implements OnInit {
                         severity: 'success',
                         summary: 'Éxito',
                         detail: 'Paciente actualizado correctamente',
-                        life: 3000
+                        life: 1500
                     });
                     this.hideDialog();
                 });
@@ -530,7 +530,7 @@ export class Paciente implements OnInit {
                         severity: 'success',
                         summary: 'Éxito',
                         detail: 'Paciente creado correctamente',
-                        life: 3000
+                        life: 1500
                     });
                     this.hideDialog();
                 });
