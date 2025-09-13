@@ -86,6 +86,11 @@ export class AppMenu {
                         routerLink: ['/pages/pacientes']
                     },
                     {
+                        label: 'Doctores',
+                        icon: 'pi pi-fw pi-user-plus',
+                        routerLink: ['/pages/doctores']
+                    },
+                    {
                         label: 'Not Found',
                         icon: 'pi pi-fw pi-exclamation-circle',
                         routerLink: ['/pages/notfound']
