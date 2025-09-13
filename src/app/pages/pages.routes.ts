@@ -7,7 +7,7 @@ import { Paciente } from './paciente/paciente';
 export default [
     { path: 'documentation', component: Documentation },
     { path: 'crud', component: Crud },
-    { path: 'paciente', component: Paciente },
+    { path: 'pacientes', component: Paciente },
     { path: 'empty', component: Empty },
     { path: '**', redirectTo: '/notfound' }
 ] as Routes;
