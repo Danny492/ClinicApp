@@ -204,7 +204,8 @@ interface ExportColumn {
                                 pInputText 
                                 id="cedula" 
                                 formControlName="cedula"
-                                placeholder="Número de cédula"
+                                placeholder="12345678901"
+                                maxlength="13"
                                 [class.ng-invalid]="submitted && patientForm.get('cedula')?.invalid"
                                 fluid 
                             />
@@ -213,6 +214,15 @@ interface ExportColumn {
                                 *ngIf="submitted && patientForm.get('cedula')?.errors?.['required']"
                             >
                                 La cédula es requerida.
+                            </small>
+                            <small 
+                                class="text-red-500" 
+                                *ngIf="submitted && patientForm.get('cedula')?.errors?.['pattern']"
+                            >
+                                La cédula debe tener el formato XXX-XXXXXXX-X (11 dígitos).
+                            </small>
+                            <small class="text-gray-600">
+                                Formato: XXX-XXXXXXX-X (se formatea automáticamente)
                             </small>
                         </div>
                         <div class="col-span-6">
@@ -381,7 +391,7 @@ export class Paciente implements OnInit {
     ) {
         this.patientForm = this.fb.group({
             nombreCompleto: ['', [Validators.required, Validators.minLength(2)]],
-            cedula: ['', [Validators.required, Validators.pattern(/^\d{7,10}$/)]],
+            cedula: ['', [Validators.required, Validators.pattern(/^\d{3}-\d{7}-\d{1}$/)]],
             fechaNacimiento: ['', Validators.required],
             genero: ['', Validators.required],
             direccion: ['', [Validators.required, Validators.minLength(10)]],
@@ -393,6 +403,7 @@ export class Paciente implements OnInit {
     ngOnInit() {
         this.loadPatients();
         this.setupTableColumns();
+        this.setupCedulaFormatting();
     }
 
     loadPatients() {
@@ -414,6 +425,36 @@ export class Paciente implements OnInit {
             title: col.header, 
             dataKey: col.field 
         }));
+    }
+
+    setupCedulaFormatting() {
+        // Escuchar cambios en el campo de cédula para formateo automático
+        this.patientForm.get('cedula')?.valueChanges.subscribe(value => {
+            if (value && typeof value === 'string') {
+                const formattedValue = this.formatCedula(value);
+                const control = this.patientForm.get('cedula');
+                if (control && formattedValue !== value) {
+                    control.setValue(formattedValue, { emitEvent: false });
+                }
+            }
+        });
+    }
+
+    formatCedula(value: string): string {
+        // Remover todos los caracteres que no sean números
+        const numbersOnly = value.replace(/\D/g, '');
+        
+        // Limitar a 11 dígitos máximo
+        const limitedNumbers = numbersOnly.substring(0, 11);
+        
+        // Aplicar formato XXX-XXXXXXX-X
+        if (limitedNumbers.length <= 3) {
+            return limitedNumbers;
+        } else if (limitedNumbers.length <= 10) {
+            return `${limitedNumbers.substring(0, 3)}-${limitedNumbers.substring(3)}`;
+        } else {
+            return `${limitedNumbers.substring(0, 3)}-${limitedNumbers.substring(3, 10)}-${limitedNumbers.substring(10)}`;
+        }
     }
 
     exportCSV() {
