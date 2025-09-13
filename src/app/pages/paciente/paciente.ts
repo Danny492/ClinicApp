@@ -113,15 +113,16 @@ function createUniqueValidator(
             [rowsPerPageOptions]="[10, 20, 30]"
         >
             <ng-template #caption>
-                <div class="flex items-center justify-between">
-                    <h5 class="m-0">Gestión de Pacientes</h5>
-                    <p-iconfield>
+                <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+                    <h5 class="m-0 text-center lg:text-left">Gestión de Pacientes</h5>
+                    <p-iconfield class="w-full lg:w-auto">
                         <p-inputicon styleClass="pi pi-search" />
                         <input 
                             pInputText 
                             type="text" 
                             (input)="onGlobalFilter(dt, $event)" 
                             placeholder="Buscar por nombre, cédula o correo..." 
+                            class="w-full"
                         />
                     </p-iconfield>
                 </div>
@@ -393,10 +394,12 @@ function createUniqueValidator(
 
         <p-dialog 
             [(visible)]="patientDetailsDialog" 
-            [style]="{ width: '500px' }" 
+            [style]="{ width: '500px', height: 'auto', maxHeight: '90vh' }" 
             header="Detalles del Paciente" 
             [modal]="true"
             [closable]="true"
+            [styleClass]="'patient-details-dialog'"
+            [position]="'bottom'"
         >
             <ng-template #content>
                 <div class="grid grid-cols-12 gap-4" *ngIf="patient">
@@ -490,6 +493,31 @@ function createUniqueValidator(
         <p-confirmdialog [style]="{ width: '450px' }" />
         <p-toast />
     `,
+    styles: [`
+        :host ::ng-deep .patient-details-dialog .p-dialog-content {
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        
+        :host ::ng-deep .patient-details-dialog .p-dialog-content > div {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+        }
+        
+        :host ::ng-deep .patient-details-dialog .p-dialog-content .bg-gray-50 {
+            margin-bottom: 0;
+        }
+        
+        :host ::ng-deep .patient-details-dialog .p-dialog-footer {
+            margin-top: 0;
+            padding-top: 1rem;
+        }
+    `],
     providers: [MessageService, PatientService, ConfirmationService]
 })
 export class Paciente implements OnInit {
