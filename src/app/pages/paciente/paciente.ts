@@ -221,9 +221,6 @@ interface ExportColumn {
                             >
                                 La cédula debe tener el formato XXX-XXXXXXX-X (11 dígitos).
                             </small>
-                            <small class="text-gray-600">
-                                Formato: XXX-XXXXXXX-X (se formatea automáticamente)
-                            </small>
                         </div>
                         <div class="col-span-6">
                             <label for="fechaNacimiento" class="block font-bold mb-2">Fecha de Nacimiento *</label>
