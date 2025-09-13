@@ -305,19 +305,26 @@ interface ExportColumn {
                     <div class="grid grid-cols-12 gap-4">
                         <div class="col-span-12">
                             <label for="direccion" class="block font-bold mb-2">Dirección *</label>
-                            <p-textarea 
+                            <textarea 
                                 id="direccion" 
+                                pInputText
                                 formControlName="direccion"
                                 placeholder="Ingrese la dirección completa"
                                 rows="3"
                                 [class.ng-invalid]="submitted && patientForm.get('direccion')?.invalid"
-                                fluid
-                            />
+                                style="width: 100%; resize: vertical;"
+                            ></textarea>
                             <small 
                                 class="text-red-500" 
                                 *ngIf="submitted && patientForm.get('direccion')?.errors?.['required']"
                             >
                                 La dirección es requerida.
+                            </small>
+                            <small 
+                                class="text-red-500" 
+                                *ngIf="submitted && patientForm.get('direccion')?.errors?.['minlength']"
+                            >
+                                La dirección debe tener al menos 10 caracteres.
                             </small>
                         </div>
                     </div>
