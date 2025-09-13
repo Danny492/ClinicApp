@@ -193,6 +193,8 @@ function createUniqueValidator(
             [header]="isEditMode ? 'Editar Paciente' : 'Nuevo Paciente'" 
             [modal]="true"
             [closable]="true"
+            [draggable]="false"
+            [resizable]="false"
         >
             <ng-template #content>
                 <form [formGroup]="patientForm" class="flex flex-col gap-4">
@@ -400,6 +402,8 @@ function createUniqueValidator(
             [closable]="true"
             [styleClass]="'patient-details-dialog'"
             [position]="'bottom'"
+            [draggable]="false"
+            [resizable]="false"
         >
             <ng-template #content>
                 <div class="grid grid-cols-12 gap-4" *ngIf="patient">
