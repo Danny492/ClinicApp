@@ -98,6 +98,42 @@ export class PatientService {
         });
     }
 
+    isNombreCompletoUnique(nombreCompleto: string, excludeId?: string): Promise<boolean> {
+        return new Promise((resolve) => {
+            setTimeout(() => {
+                const exists = this.patients.some(p => 
+                    p.nombreCompleto.toLowerCase() === nombreCompleto.toLowerCase() && 
+                    p.id !== excludeId
+                );
+                resolve(!exists);
+            }, 50);
+        });
+    }
+
+    isCedulaUnique(cedula: string, excludeId?: string): Promise<boolean> {
+        return new Promise((resolve) => {
+            setTimeout(() => {
+                const exists = this.patients.some(p => 
+                    p.cedula === cedula && 
+                    p.id !== excludeId
+                );
+                resolve(!exists);
+            }, 50);
+        });
+    }
+
+    isCorreoElectronicoUnique(correoElectronico: string, excludeId?: string): Promise<boolean> {
+        return new Promise((resolve) => {
+            setTimeout(() => {
+                const exists = this.patients.some(p => 
+                    p.correoElectronico.toLowerCase() === correoElectronico.toLowerCase() && 
+                    p.id !== excludeId
+                );
+                resolve(!exists);
+            }, 50);
+        });
+    }
+
     private generateId(): string {
         let id = '';
         const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';

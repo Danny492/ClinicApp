@@ -2,7 +2,7 @@ import { Component, OnInit, signal, ViewChild } from '@angular/core';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { Table, TableModule } from 'primeng/table';
 import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators, AbstractControl, ValidationErrors, AsyncValidatorFn } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { RippleModule } from 'primeng/ripple';
 import { ToastModule } from 'primeng/toast';
@@ -15,6 +15,7 @@ import { InputIconModule } from 'primeng/inputicon';
 import { IconFieldModule } from 'primeng/iconfield';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { Patient, PatientService } from '../service/patient.service';
+import { Observable, map } from 'rxjs';
 
 interface Column {
     field: string;
@@ -25,6 +26,25 @@ interface Column {
 interface ExportColumn {
     title: string;
     dataKey: string;
+}
+
+// Validadores personalizados para campos únicos
+function createUniqueValidator(
+    validatorFn: (value: string, excludeId?: string) => Promise<boolean>,
+    excludeId?: string
+): AsyncValidatorFn {
+    return (control: AbstractControl): Observable<ValidationErrors | null> => {
+        if (!control.value) {
+            return new Observable(observer => observer.next(null));
+        }
+        
+        return new Observable(observer => {
+            validatorFn(control.value, excludeId).then(isUnique => {
+                observer.next(isUnique ? null : { unique: true });
+                observer.complete();
+            });
+        });
+    };
 }
 
 @Component({
@@ -187,12 +207,18 @@ interface ExportColumn {
                                 [class.ng-invalid]="submitted && patientForm.get('nombreCompleto')?.invalid"
                                 fluid 
                             />
-                            <small 
-                                class="text-red-500" 
-                                *ngIf="submitted && patientForm.get('nombreCompleto')?.errors?.['required']"
-                            >
-                                El nombre completo es requerido.
-                            </small>
+                             <small 
+                                 class="text-red-500" 
+                                 *ngIf="submitted && patientForm.get('nombreCompleto')?.errors?.['required']"
+                             >
+                                 El nombre completo es requerido.
+                             </small>
+                             <small 
+                                 class="text-red-500" 
+                                 *ngIf="patientForm.get('nombreCompleto')?.errors?.['unique']"
+                             >
+                                 Este nombre completo ya está registrado.
+                             </small>
                         </div>
                     </div>
 
@@ -215,12 +241,18 @@ interface ExportColumn {
                             >
                                 La cédula es requerida.
                             </small>
-                            <small 
-                                class="text-red-500" 
-                                *ngIf="submitted && patientForm.get('cedula')?.errors?.['pattern']"
-                            >
-                                La cédula debe tener el formato XXX-XXXXXXX-X (11 dígitos).
-                            </small>
+                             <small 
+                                 class="text-red-500" 
+                                 *ngIf="submitted && patientForm.get('cedula')?.errors?.['pattern']"
+                             >
+                                 La cédula debe tener el formato XXX-XXXXXXX-X (11 dígitos).
+                             </small>
+                             <small 
+                                 class="text-red-500" 
+                                 *ngIf="patientForm.get('cedula')?.errors?.['unique']"
+                             >
+                                 Esta cédula ya está registrada.
+                             </small>
                         </div>
                         <div class="col-span-6">
                             <label for="fechaNacimiento" class="block font-bold mb-2">Fecha de Nacimiento *</label>
@@ -300,12 +332,18 @@ interface ExportColumn {
                             >
                                 El correo electrónico es requerido.
                             </small>
-                            <small 
-                                class="text-red-500" 
-                                *ngIf="submitted && patientForm.get('correoElectronico')?.errors?.['email']"
-                            >
-                                Ingrese un correo electrónico válido.
-                            </small>
+                             <small 
+                                 class="text-red-500" 
+                                 *ngIf="submitted && patientForm.get('correoElectronico')?.errors?.['email']"
+                             >
+                                 Ingrese un correo electrónico válido.
+                             </small>
+                             <small 
+                                 class="text-red-500" 
+                                 *ngIf="patientForm.get('correoElectronico')?.errors?.['unique']"
+                             >
+                                 Este correo electrónico ya está registrado.
+                             </small>
                         </div>
                     </div>
 
@@ -387,13 +425,22 @@ export class Paciente implements OnInit {
         private fb: FormBuilder
     ) {
         this.patientForm = this.fb.group({
-            nombreCompleto: ['', [Validators.required, Validators.minLength(2)]],
-            cedula: ['', [Validators.required, Validators.pattern(/^\d{3}-\d{7}-\d{1}$/)]],
+            nombreCompleto: ['', 
+                [Validators.required, Validators.minLength(2)], 
+                [createUniqueValidator(this.patientService.isNombreCompletoUnique.bind(this.patientService))]
+            ],
+            cedula: ['', 
+                [Validators.required, Validators.pattern(/^\d{3}-\d{7}-\d{1}$/)], 
+                [createUniqueValidator(this.patientService.isCedulaUnique.bind(this.patientService))]
+            ],
             fechaNacimiento: ['', Validators.required],
             genero: ['', Validators.required],
             direccion: ['', [Validators.required, Validators.minLength(10)]],
             telefono: ['', [Validators.required, Validators.pattern(/^[0-9+\-\s()]+$/)]],
-            correoElectronico: ['', [Validators.required, Validators.email]]
+            correoElectronico: ['', 
+                [Validators.required, Validators.email], 
+                [createUniqueValidator(this.patientService.isCorreoElectronicoUnique.bind(this.patientService))]
+            ]
         });
     }
 
@@ -454,6 +501,32 @@ export class Paciente implements OnInit {
         }
     }
 
+    updateValidatorsForNew() {
+        // Para nuevos pacientes, no excluir ningún ID
+        this.patientForm.get('nombreCompleto')?.setAsyncValidators([
+            createUniqueValidator(this.patientService.isNombreCompletoUnique.bind(this.patientService))
+        ]);
+        this.patientForm.get('cedula')?.setAsyncValidators([
+            createUniqueValidator(this.patientService.isCedulaUnique.bind(this.patientService))
+        ]);
+        this.patientForm.get('correoElectronico')?.setAsyncValidators([
+            createUniqueValidator(this.patientService.isCorreoElectronicoUnique.bind(this.patientService))
+        ]);
+    }
+
+    updateValidatorsForEdit(excludeId?: string) {
+        // Para edición, excluir el ID del paciente actual
+        this.patientForm.get('nombreCompleto')?.setAsyncValidators([
+            createUniqueValidator(this.patientService.isNombreCompletoUnique.bind(this.patientService), excludeId)
+        ]);
+        this.patientForm.get('cedula')?.setAsyncValidators([
+            createUniqueValidator(this.patientService.isCedulaUnique.bind(this.patientService), excludeId)
+        ]);
+        this.patientForm.get('correoElectronico')?.setAsyncValidators([
+            createUniqueValidator(this.patientService.isCorreoElectronicoUnique.bind(this.patientService), excludeId)
+        ]);
+    }
+
     exportCSV() {
         this.dt.exportCSV();
     }
@@ -474,6 +547,7 @@ export class Paciente implements OnInit {
             correoElectronico: ''
         };
         this.submitted = false;
+        this.updateValidatorsForNew();
         this.patientForm.reset();
         this.patientDialog = true;
     }
@@ -482,6 +556,9 @@ export class Paciente implements OnInit {
         this.isEditMode = true;
         this.patient = { ...patient };
         this.submitted = false;
+        
+        // Actualizar los validadores para excluir el ID del paciente actual
+        this.updateValidatorsForEdit(patient.id);
         
         this.patientForm.patchValue({
             nombreCompleto: patient.nombreCompleto,
@@ -544,6 +621,11 @@ export class Paciente implements OnInit {
     savePatient() {
         this.submitted = true;
 
+        // Marcar todos los campos como tocados para mostrar errores
+        Object.keys(this.patientForm.controls).forEach(key => {
+            this.patientForm.get(key)?.markAsTouched();
+        });
+
         if (this.patientForm.valid) {
             const formValue = this.patientForm.value;
             const patientData: Patient = {
@@ -581,12 +663,27 @@ export class Paciente implements OnInit {
                 });
             }
         } else {
-            this.messageService.add({
-                severity: 'error',
-                summary: 'Error',
-                detail: 'Por favor complete todos los campos requeridos correctamente',
-                life: 3000
+            // Verificar si hay errores de unicidad
+            const hasUniqueErrors = Object.keys(this.patientForm.controls).some(key => {
+                const control = this.patientForm.get(key);
+                return control?.errors?.['unique'];
             });
+
+            if (hasUniqueErrors) {
+                this.messageService.add({
+                    severity: 'error',
+                    summary: 'Error',
+                    detail: 'Algunos campos ya están registrados en el sistema',
+                    life: 3000
+                });
+            } else {
+                this.messageService.add({
+                    severity: 'error',
+                    summary: 'Error',
+                    detail: 'Por favor complete todos los campos requeridos correctamente',
+                    life: 3000
+                });
+            }
         }
     }
 }
