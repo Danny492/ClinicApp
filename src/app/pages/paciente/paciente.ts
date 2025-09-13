@@ -195,6 +195,7 @@ function createUniqueValidator(
             [closable]="true"
             [draggable]="false"
             [resizable]="false"
+            [styleClass]="'patient-form-dialog'"
         >
             <ng-template #content>
                 <form [formGroup]="patientForm" class="flex flex-col gap-4">
@@ -408,66 +409,66 @@ function createUniqueValidator(
             <ng-template #content>
                 <div class="grid grid-cols-12 gap-4" *ngIf="patient">
                     <div class="col-span-12">
-                        <div class="bg-gray-50 p-4 rounded-lg">
+                        <div class="bg-surface-0 dark:bg-surface-900 p-4 rounded-lg">
                             <div class="text-center mb-6">
                                     <i class="pi pi-user text-8xl text-blue-500 mb-3 block" style="font-size: 5rem;"></i>
-                                <h3 class="text-xl font-bold text-gray-800">{{ patient.nombreCompleto }}</h3>
+                                <h3 class="text-xl font-bold text-surface-900 dark:text-surface-0">{{ patient.nombreCompleto }}</h3>
                             </div>
                             
                             <div class="grid grid-cols-1 gap-4">
                                 <div class="flex items-center">
-                                    <i class="pi pi-id-card text-gray-600 mr-3"></i>
+                                    <i class="pi pi-id-card text-surface-600 dark:text-surface-400 mr-3"></i>
                                     <div class="flex flex-col">
-                                        <span class="font-bold text-lg text-gray-800">Cédula</span>
-                                        <span class="text-gray-700">{{ patient.cedula }}</span>
+                                        <span class="font-bold text-lg text-surface-900 dark:text-surface-0">Cédula</span>
+                                        <span class="text-surface-700 dark:text-surface-300">{{ patient.cedula }}</span>
                                     </div>
                                 </div>
                                 
                                 <div class="flex items-center">
-                                    <i class="pi pi-calendar text-gray-600 mr-3"></i>
+                                    <i class="pi pi-calendar text-surface-600 dark:text-surface-400 mr-3"></i>
                                     <div class="flex flex-col">
-                                        <span class="font-bold text-lg text-gray-800">Fecha de Nacimiento</span>
-                                        <span class="text-gray-700">{{ patient.fechaNacimiento | date:'dd/MM/yyyy' }}</span>
+                                        <span class="font-bold text-lg text-surface-900 dark:text-surface-0">Fecha de Nacimiento</span>
+                                        <span class="text-surface-700 dark:text-surface-300">{{ patient.fechaNacimiento | date:'dd/MM/yyyy' }}</span>
                                     </div>
                                 </div>
                                 
                                 <div class="flex items-center">
-                                    <i class="pi pi-users text-gray-600 mr-3"></i>
+                                    <i class="pi pi-users text-surface-600 dark:text-surface-400 mr-3"></i>
                                     <div class="flex flex-col">
-                                        <span class="font-bold text-lg text-gray-800">Género</span>
-                                        <span class="text-gray-700">{{ patient.genero }}</span>
+                                        <span class="font-bold text-lg text-surface-900 dark:text-surface-0">Género</span>
+                                        <span class="text-surface-700 dark:text-surface-300">{{ patient.genero }}</span>
                                     </div>
                                 </div>
                                 
                                 <div class="flex items-center">
-                                    <i class="pi pi-phone text-gray-600 mr-3"></i>
+                                    <i class="pi pi-phone text-surface-600 dark:text-surface-400 mr-3"></i>
                                     <div class="flex flex-col">
-                                        <span class="font-bold text-lg text-gray-800">Teléfono</span>
-                                        <span class="text-gray-700">{{ patient.telefono }}</span>
+                                        <span class="font-bold text-lg text-surface-900 dark:text-surface-0">Teléfono</span>
+                                        <span class="text-surface-700 dark:text-surface-300">{{ patient.telefono }}</span>
                                     </div>
                                 </div>
                                 
                                 <div class="flex items-center">
-                                    <i class="pi pi-envelope text-gray-600 mr-3"></i>
+                                    <i class="pi pi-envelope text-surface-600 dark:text-surface-400 mr-3"></i>
                                     <div class="flex flex-col">
-                                        <span class="font-bold text-lg text-gray-800">Correo Electrónico</span>
-                                        <span class="text-gray-700">{{ patient.correoElectronico }}</span>
+                                        <span class="font-bold text-lg text-surface-900 dark:text-surface-0">Correo Electrónico</span>
+                                        <span class="text-surface-700 dark:text-surface-300">{{ patient.correoElectronico }}</span>
                                     </div>
                                 </div>
                                 
                                 <div class="flex items-start">
-                                    <i class="pi pi-map-marker text-gray-600 mr-3 mt-2"></i>
+                                    <i class="pi pi-map-marker text-surface-600 dark:text-surface-400 mr-3 mt-2"></i>
                                     <div class="flex flex-col">
-                                        <span class="font-bold text-lg text-gray-800">Dirección</span>
-                                        <span class="text-gray-700">{{ patient.direccion }}</span>
+                                        <span class="font-bold text-lg text-surface-900 dark:text-surface-0">Dirección</span>
+                                        <span class="text-surface-700 dark:text-surface-300">{{ patient.direccion }}</span>
                                     </div>
                                 </div>
                                 
                                 <div class="flex items-center" *ngIf="patient.fechaRegistro">
-                                    <i class="pi pi-clock text-gray-600 mr-3"></i>
+                                    <i class="pi pi-clock text-surface-600 dark:text-surface-400 mr-3"></i>
                                     <div class="flex flex-col">
-                                        <span class="font-bold text-lg text-gray-800">Fecha de Registro</span>
-                                        <span class="text-gray-700">{{ patient.fechaRegistro | date:'dd/MM/yyyy HH:mm' }}</span>
+                                        <span class="font-bold text-lg text-surface-900 dark:text-surface-0">Fecha de Registro</span>
+                                        <span class="text-surface-700 dark:text-surface-300">{{ patient.fechaRegistro | date:'dd/MM/yyyy HH:mm' }}</span>
                                     </div>
                                 </div>
                             </div>
@@ -513,7 +514,8 @@ function createUniqueValidator(
             justify-content: flex-end;
         }
         
-        :host ::ng-deep .patient-details-dialog .p-dialog-content .bg-gray-50 {
+        :host ::ng-deep .patient-details-dialog .p-dialog-content .bg-surface-0,
+        :host ::ng-deep .patient-details-dialog .p-dialog-content .dark\\:bg-surface-900 {
             margin-bottom: 0;
         }
         
