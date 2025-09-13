@@ -157,8 +157,8 @@ function createUniqueValidator(
             </ng-template>
             
             <ng-template #body let-patient>
-                <tr>
-                    <td style="width: 3rem">
+                <tr (click)="showPatientDetails(patient)" style="cursor: pointer;">
+                    <td style="width: 3rem" (click)="$event.stopPropagation()">
                         <p-tableCheckbox [value]="patient" />
                     </td>
                     <td style="min-width: 20rem">{{ patient.nombreCompleto }}</td>
@@ -166,7 +166,7 @@ function createUniqueValidator(
                     <td style="min-width: 12rem">{{ patient.telefono }}</td>
                     <td style="min-width: 16rem">{{ patient.correoElectronico }}</td>
                     <td style="min-width: 10rem">{{ patient.genero }}</td>
-                    <td>
+                    <td (click)="$event.stopPropagation()">
                         <p-button 
                             icon="pi pi-pencil" 
                             class="mr-2" 
@@ -391,6 +391,102 @@ function createUniqueValidator(
             </ng-template>
         </p-dialog>
 
+        <p-dialog 
+            [(visible)]="patientDetailsDialog" 
+            [style]="{ width: '500px' }" 
+            header="Detalles del Paciente" 
+            [modal]="true"
+            [closable]="true"
+        >
+            <ng-template #content>
+                <div class="grid grid-cols-12 gap-4" *ngIf="patient">
+                    <div class="col-span-12">
+                        <div class="bg-gray-50 p-4 rounded-lg">
+                            <div class="text-center mb-6">
+                                    <i class="pi pi-user text-8xl text-blue-500 mb-3 block" style="font-size: 5rem;"></i>
+                                <h3 class="text-xl font-bold text-gray-800">{{ patient.nombreCompleto }}</h3>
+                            </div>
+                            
+                            <div class="grid grid-cols-1 gap-4">
+                                <div class="flex items-center">
+                                    <i class="pi pi-id-card text-gray-600 mr-3"></i>
+                                    <div class="flex flex-col">
+                                        <span class="font-bold text-lg text-gray-800">Cédula</span>
+                                        <span class="text-gray-700">{{ patient.cedula }}</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-center">
+                                    <i class="pi pi-calendar text-gray-600 mr-3"></i>
+                                    <div class="flex flex-col">
+                                        <span class="font-bold text-lg text-gray-800">Fecha de Nacimiento</span>
+                                        <span class="text-gray-700">{{ patient.fechaNacimiento | date:'dd/MM/yyyy' }}</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-center">
+                                    <i class="pi pi-users text-gray-600 mr-3"></i>
+                                    <div class="flex flex-col">
+                                        <span class="font-bold text-lg text-gray-800">Género</span>
+                                        <span class="text-gray-700">{{ patient.genero }}</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-center">
+                                    <i class="pi pi-phone text-gray-600 mr-3"></i>
+                                    <div class="flex flex-col">
+                                        <span class="font-bold text-lg text-gray-800">Teléfono</span>
+                                        <span class="text-gray-700">{{ patient.telefono }}</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-center">
+                                    <i class="pi pi-envelope text-gray-600 mr-3"></i>
+                                    <div class="flex flex-col">
+                                        <span class="font-bold text-lg text-gray-800">Correo Electrónico</span>
+                                        <span class="text-gray-700">{{ patient.correoElectronico }}</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-start">
+                                    <i class="pi pi-map-marker text-gray-600 mr-3 mt-2"></i>
+                                    <div class="flex flex-col">
+                                        <span class="font-bold text-lg text-gray-800">Dirección</span>
+                                        <span class="text-gray-700">{{ patient.direccion }}</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-center" *ngIf="patient.fechaRegistro">
+                                    <i class="pi pi-clock text-gray-600 mr-3"></i>
+                                    <div class="flex flex-col">
+                                        <span class="font-bold text-lg text-gray-800">Fecha de Registro</span>
+                                        <span class="text-gray-700">{{ patient.fechaRegistro | date:'dd/MM/yyyy HH:mm' }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </ng-template>
+
+            <ng-template #footer>
+                <div class="flex justify-between w-full">
+                    <p-button 
+                        label="Editar" 
+                        icon="pi pi-pencil" 
+                        severity="secondary"
+                        (click)="editPatientFromDetails()" 
+                    />
+                    <p-button 
+                        label="Cerrar" 
+                        icon="pi pi-times" 
+                        text 
+                        (click)="hideDetailsDialog()" 
+                    />
+                </div>
+            </ng-template>
+        </p-dialog>
+
         <p-confirmdialog [style]="{ width: '450px' }" />
         <p-toast />
     `,
@@ -399,6 +495,7 @@ function createUniqueValidator(
 export class Paciente implements OnInit {
     patientDialog: boolean = false;
     isEditMode: boolean = false;
+    patientDetailsDialog: boolean = false;
     patients = signal<Patient[]>([]);
     patient!: Patient;
     selectedPatients!: Patient[] | null;
@@ -595,6 +692,21 @@ export class Paciente implements OnInit {
         this.patientDialog = false;
         this.submitted = false;
         this.patientForm.reset();
+    }
+
+    showPatientDetails(patient: Patient) {
+        this.patient = { ...patient };
+        this.patientDetailsDialog = true;
+    }
+
+    hideDetailsDialog() {
+        this.patientDetailsDialog = false;
+        this.patient = {} as Patient;
+    }
+
+    editPatientFromDetails() {
+        this.patientDetailsDialog = false;
+        this.editPatient(this.patient);
     }
 
     deletePatient(patient: Patient) {
