@@ -4,12 +4,14 @@ import { Crud } from './crud/crud';
 import { Empty } from './empty/empty';
 import { Paciente } from './paciente/paciente';
 import { DoctorComponent } from './doctor/doctor';
+import { Cita } from './cita/cita';
 
 export default [
     { path: 'documentation', component: Documentation },
     { path: 'crud', component: Crud },
     { path: 'pacientes', component: Paciente },
     { path: 'doctores', component: DoctorComponent },
+    { path: 'citas', component: Cita },
     { path: 'empty', component: Empty },
     { path: '**', redirectTo: '/notfound' }
 ] as Routes;
