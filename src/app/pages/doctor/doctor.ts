@@ -272,7 +272,12 @@ function createUniqueValidator(
                                 [options]="especialidades" 
                                 placeholder="Seleccione especialidad"
                                 [class.ng-invalid]="submitted && doctorForm.get('especialidad')?.invalid"
-                                fluid 
+                                fluid
+                                [appendTo]="'body'"
+                                [virtualScroll]="false"
+                                [filter]="true"
+                                filterPlaceholder="Buscar especialidad..."
+                                [showClear]="true"
                             />
                             <small 
                                 class="text-red-500" 
@@ -361,7 +366,12 @@ function createUniqueValidator(
                                             [options]="diasSemana" 
                                             placeholder="Seleccione día"
                                             [class.ng-invalid]="submitted && schedule.get('diaSemana')?.invalid"
-                                            fluid 
+                                            fluid
+                                            [appendTo]="'body'"
+                                            [virtualScroll]="false"
+                                            [filter]="true"
+                                            filterPlaceholder="Buscar día..."
+                                            [showClear]="true"
                                         />
                                     </div>
                                     <div class="col-span-3">
