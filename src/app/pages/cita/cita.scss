@@ -1,0 +1,130 @@
+:host ::ng-deep .appointment-details-dialog .p-dialog-content {
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+:host ::ng-deep .appointment-details-dialog .p-dialog-content > div {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+:host ::ng-deep .appointment-details-dialog .p-dialog-content .bg-surface-0,
+:host ::ng-deep .appointment-details-dialog .p-dialog-content .dark\\:bg-surface-900 {
+    margin-bottom: 0;
+}
+
+:host ::ng-deep .appointment-details-dialog .p-dialog-footer {
+    margin-top: 0;
+    padding-top: 1rem;
+}
+
+:host ::ng-deep .appointment-form-dialog .p-dialog-content {
+    padding: 1.5rem;
+}
+
+:host ::ng-deep .p-table .p-datatable-tbody > tr > td {
+    padding: 0.75rem;
+}
+
+:host ::ng-deep .p-table .p-datatable-thead > tr > th {
+    padding: 0.75rem;
+    background-color: var(--surface-50);
+    color: var(--text-color);
+    font-weight: 600;
+}
+
+:host ::ng-deep .p-table .p-datatable-tbody > tr:hover {
+    background-color: var(--surface-100);
+}
+
+:host ::ng-deep .p-tag {
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+:host ::ng-deep .p-button.p-button-sm {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+}
+
+:host ::ng-deep .p-dropdown {
+    width: 100%;
+}
+
+:host ::ng-deep .p-calendar {
+    width: 100%;
+}
+
+:host ::ng-deep .p-inputtext {
+    width: 100%;
+}
+
+:host ::ng-deep .p-textarea {
+    width: 100%;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    :host ::ng-deep .p-dialog {
+        width: 95vw !important;
+        max-width: 95vw !important;
+    }
+    
+    :host ::ng-deep .p-table .p-datatable-tbody > tr > td {
+        padding: 0.5rem;
+        font-size: 0.875rem;
+    }
+    
+    :host ::ng-deep .p-table .p-datatable-thead > tr > th {
+        padding: 0.5rem;
+        font-size: 0.875rem;
+    }
+    
+    :host ::ng-deep .p-button.p-button-sm {
+        padding: 0.125rem 0.25rem;
+        font-size: 0.625rem;
+    }
+}
+
+/* Dark mode adjustments */
+:host ::ng-deep .dark .p-table .p-datatable-thead > tr > th {
+    background-color: var(--surface-800);
+    color: var(--surface-0);
+}
+
+:host ::ng-deep .dark .p-table .p-datatable-tbody > tr:hover {
+    background-color: var(--surface-700);
+}
+
+:host ::ng-deep .dark .bg-surface-50 {
+    background-color: var(--surface-800) !important;
+}
+
+:host ::ng-deep .dark .text-surface-600 {
+    color: var(--surface-400) !important;
+}
+
+:host ::ng-deep .dark .text-surface-400 {
+    color: var(--surface-500) !important;
+}
+
+:host ::ng-deep .dark .text-surface-700 {
+    color: var(--surface-300) !important;
+}
+
+:host ::ng-deep .dark .text-surface-300 {
+    color: var(--surface-200) !important;
+}
+
+:host ::ng-deep .dark .text-surface-900 {
+    color: var(--surface-0) !important;
+}
+
+:host ::ng-deep .dark .text-surface-0 {
+    color: var(--surface-900) !important;
+}

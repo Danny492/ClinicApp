@@ -91,6 +91,11 @@ export class AppMenu {
                         routerLink: ['/pages/doctores']
                     },
                     {
+                        label: 'Citas Médicas',
+                        icon: 'pi pi-fw pi-calendar',
+                        routerLink: ['/pages/citas']
+                    },
+                    {
                         label: 'Not Found',
                         icon: 'pi pi-fw pi-exclamation-circle',
                         routerLink: ['/pages/notfound']

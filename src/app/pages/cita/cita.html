@@ -1,1 +1,557 @@
-<p>cita works!</p>
+<p-toolbar styleClass="mb-6">
+    <ng-template #start>
+        <p-button 
+            label="Nueva Cita" 
+            icon="pi pi-plus" 
+            severity="secondary" 
+            class="mr-2" 
+            (onClick)="openNew()" 
+        />
+        <p-button 
+            severity="secondary" 
+            label="Eliminar Seleccionadas" 
+            icon="pi pi-trash" 
+            outlined 
+            (onClick)="deleteSelectedAppointments()" 
+            [disabled]="!selectedAppointments || !selectedAppointments.length" 
+        />
+    </ng-template>
+
+    <ng-template #end>
+        <p-button 
+            label="Actualizar" 
+            icon="pi pi-refresh" 
+            severity="secondary" 
+            class="mr-2"
+            (onClick)="refreshAppointments()" 
+        />
+        <p-button 
+            label="Exportar" 
+            icon="pi pi-upload" 
+            severity="secondary" 
+            (onClick)="exportCSV()" 
+        />
+    </ng-template>
+</p-toolbar>
+
+<p-table
+    #dt
+    [value]="appointments()"
+    [rows]="10"
+    [columns]="cols"
+    [paginator]="true"
+    [globalFilterFields]="['motivo', 'estado']"
+    [tableStyle]="{ 'min-width': '75rem' }"
+    [(selection)]="selectedAppointments"
+    [rowHover]="true"
+    dataKey="id"
+    currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} citas"
+    [showCurrentPageReport]="true"
+    [rowsPerPageOptions]="[10, 20, 30]"
+>
+    <ng-template #caption>
+        <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+            <h5 class="m-0 text-center lg:text-left">Gestión de Citas Médicas</h5>
+            <p-iconfield class="w-full lg:w-auto">
+                <p-inputicon styleClass="pi pi-search" />
+                <input 
+                    pInputText 
+                    type="text" 
+                    (input)="onGlobalFilter(dt, $event)" 
+                    placeholder="Buscar por motivo o estado..." 
+                    class="w-full"
+                />
+            </p-iconfield>
+        </div>
+    </ng-template>
+    
+    <ng-template #header>
+        <tr>
+            <th style="width: 3rem">
+                <p-tableHeaderCheckbox />
+            </th>
+            <th pSortableColumn="fecha" style="min-width: 10rem">
+                Fecha
+                <p-sortIcon field="fecha" />
+            </th>
+            <th pSortableColumn="hora" style="min-width: 8rem">
+                Hora
+                <p-sortIcon field="hora" />
+            </th>
+            <th pSortableColumn="paciente" style="min-width: 15rem">
+                Paciente
+                <p-sortIcon field="paciente" />
+            </th>
+            <th pSortableColumn="doctor" style="min-width: 15rem">
+                Doctor
+                <p-sortIcon field="doctor" />
+            </th>
+            <th pSortableColumn="servicio" style="min-width: 12rem">
+                Servicio
+                <p-sortIcon field="servicio" />
+            </th>
+            <th pSortableColumn="estado" style="min-width: 10rem">
+                Estado
+                <p-sortIcon field="estado" />
+            </th>
+            <th pSortableColumn="motivo" style="min-width: 15rem">
+                Motivo
+                <p-sortIcon field="motivo" />
+            </th>
+            <th style="min-width: 15rem">Acciones</th>
+        </tr>
+    </ng-template>
+    
+    <ng-template #body let-appointment>
+        <tr (click)="showAppointmentDetails(appointment)" style="cursor: pointer;">
+            <td style="width: 3rem" (click)="$event.stopPropagation()">
+                <p-tableCheckbox [value]="appointment" />
+            </td>
+            <td style="min-width: 10rem">{{ appointment.fecha | date:'dd/MM/yyyy' }}</td>
+            <td style="min-width: 8rem">{{ appointment.hora }}</td>
+            <td style="min-width: 15rem">{{ getPatientName(appointment.pacienteId) }}</td>
+            <td style="min-width: 15rem">{{ getDoctorName(appointment.doctorId) }}</td>
+            <td style="min-width: 12rem">{{ getServiceName(appointment.servicioId) }}</td>
+            <td style="min-width: 10rem">
+                <p-tag 
+                    [value]="getStatusLabel(appointment.estado)" 
+                    [severity]="getStatusSeverity(appointment.estado)"
+                />
+            </td>
+            <td style="min-width: 15rem">{{ appointment.motivo }}</td>
+            <td (click)="$event.stopPropagation()">
+                <div class="flex flex-wrap gap-1">
+                    <p-button 
+                        icon="pi pi-eye" 
+                        class="mr-1" 
+                        [rounded]="true" 
+                        [outlined]="true" 
+                        size="small"
+                        pTooltip="Ver detalles"
+                        (click)="showAppointmentDetails(appointment)" 
+                    />
+                    <p-button 
+                        icon="pi pi-pencil" 
+                        class="mr-1" 
+                        [rounded]="true" 
+                        [outlined]="true" 
+                        size="small"
+                        pTooltip="Editar"
+                        [disabled]="!canEditAppointment(appointment)"
+                        (click)="editAppointment(appointment)" 
+                    />
+                    <p-button 
+                        icon="pi pi-check" 
+                        class="mr-1" 
+                        [rounded]="true" 
+                        [outlined]="true" 
+                        size="small"
+                        pTooltip="Confirmar"
+                        severity="success"
+                        [disabled]="!canConfirmAppointment(appointment)"
+                        (click)="confirmAppointment(appointment)" 
+                    />
+                    <p-button 
+                        icon="pi pi-times" 
+                        class="mr-1" 
+                        [rounded]="true" 
+                        [outlined]="true" 
+                        size="small"
+                        pTooltip="Cancelar"
+                        severity="danger"
+                        [disabled]="!canCancelAppointment(appointment)"
+                        (click)="openCancelDialog(appointment)" 
+                    />
+                    <p-button 
+                        icon="pi pi-trash" 
+                        [rounded]="true" 
+                        [outlined]="true" 
+                        size="small"
+                        pTooltip="Eliminar"
+                        severity="danger"
+                        (click)="deleteAppointment(appointment)" 
+                    />
+                </div>
+            </td>
+        </tr>
+    </ng-template>
+</p-table>
+
+<!-- Dialog para crear/editar citas -->
+<p-dialog 
+    [(visible)]="appointmentDialog" 
+    [style]="{ width: '800px' }" 
+    [header]="isEditMode ? 'Editar Cita' : 'Nueva Cita'" 
+    [modal]="true"
+    [closable]="true"
+    [draggable]="false"
+    [resizable]="false"
+    [styleClass]="'appointment-form-dialog'"
+>
+    <ng-template #content>
+        <form [formGroup]="appointmentForm" class="flex flex-col gap-4">
+            <div class="grid grid-cols-12 gap-4">
+                <div class="col-span-6">
+                    <label for="pacienteId" class="block font-bold mb-2">Paciente *</label>
+                    <p-select 
+                        id="pacienteId" 
+                        formControlName="pacienteId"
+                        [options]="patients()" 
+                        optionLabel="nombreCompleto" 
+                        optionValue="id" 
+                        placeholder="Seleccione un paciente"
+                        [class.ng-invalid]="submitted && appointmentForm.get('pacienteId')?.invalid"
+                        fluid 
+                    />
+                    <small 
+                        class="text-red-500" 
+                        *ngIf="submitted && appointmentForm.get('pacienteId')?.errors?.['required']"
+                    >
+                        El paciente es requerido.
+                    </small>
+                </div>
+                <div class="col-span-6">
+                    <label for="doctorId" class="block font-bold mb-2">Doctor *</label>
+                    <p-select 
+                        id="doctorId" 
+                        formControlName="doctorId"
+                        [options]="doctors()" 
+                        optionLabel="nombreCompleto" 
+                        optionValue="id" 
+                        placeholder="Seleccione un doctor"
+                        [class.ng-invalid]="submitted && appointmentForm.get('doctorId')?.invalid"
+                        fluid 
+                    />
+                    <small 
+                        class="text-red-500" 
+                        *ngIf="submitted && appointmentForm.get('doctorId')?.errors?.['required']"
+                    >
+                        El doctor es requerido.
+                    </small>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-12 gap-4">
+                <div class="col-span-6">
+                    <label for="servicioId" class="block font-bold mb-2">Servicio *</label>
+                    <p-select 
+                        id="servicioId" 
+                        formControlName="servicioId"
+                        [options]="medicalServices()" 
+                        optionLabel="nombre" 
+                        optionValue="id" 
+                        placeholder="Seleccione un servicio"
+                        [class.ng-invalid]="submitted && appointmentForm.get('servicioId')?.invalid"
+                        fluid 
+                    />
+                    <small 
+                        class="text-red-500" 
+                        *ngIf="submitted && appointmentForm.get('servicioId')?.errors?.['required']"
+                    >
+                        El servicio es requerido.
+                    </small>
+                </div>
+                <div class="col-span-6">
+                    <label for="estado" class="block font-bold mb-2">Estado *</label>
+                    <p-select 
+                        id="estado" 
+                        formControlName="estado"
+                        [options]="statusOptions" 
+                        optionLabel="label" 
+                        optionValue="value" 
+                        placeholder="Seleccione estado"
+                        [class.ng-invalid]="submitted && appointmentForm.get('estado')?.invalid"
+                        fluid 
+                    />
+                    <small 
+                        class="text-red-500" 
+                        *ngIf="submitted && appointmentForm.get('estado')?.errors?.['required']"
+                    >
+                        El estado es requerido.
+                    </small>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-12 gap-4">
+                <div class="col-span-6">
+                    <label for="fecha" class="block font-bold mb-2">Fecha *</label>
+                    <p-datepicker 
+                        id="fecha" 
+                        formControlName="fecha"
+                        [minDate]="minDate"
+                        [maxDate]="maxDate"
+                        placeholder="Seleccione fecha"
+                        [class.ng-invalid]="submitted && appointmentForm.get('fecha')?.invalid"
+                        fluid 
+                    />
+                    <small 
+                        class="text-red-500" 
+                        *ngIf="submitted && appointmentForm.get('fecha')?.errors?.['required']"
+                    >
+                        La fecha es requerida.
+                    </small>
+                </div>
+                <div class="col-span-6">
+                    <label for="hora" class="block font-bold mb-2">Hora *</label>
+                    <p-select 
+                        id="hora" 
+                        formControlName="hora"
+                        [options]="availableTimeSlots" 
+                        placeholder="Seleccione hora"
+                        [class.ng-invalid]="submitted && appointmentForm.get('hora')?.invalid"
+                        [disabled]="availableTimeSlots.length === 0"
+                        fluid 
+                    />
+                    <small 
+                        class="text-red-500" 
+                        *ngIf="submitted && appointmentForm.get('hora')?.errors?.['required']"
+                    >
+                        La hora es requerida.
+                    </small>
+                    <small 
+                        class="text-blue-500" 
+                        *ngIf="availableTimeSlots.length === 0 && appointmentForm.get('doctorId')?.value && appointmentForm.get('fecha')?.value && appointmentForm.get('servicioId')?.value"
+                    >
+                        Cargando horarios disponibles...
+                    </small>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-12 gap-4">
+                <div class="col-span-12">
+                    <label for="motivo" class="block font-bold mb-2">Motivo *</label>
+                    <input 
+                        type="text" 
+                        pInputText 
+                        id="motivo" 
+                        formControlName="motivo"
+                        placeholder="Ingrese el motivo de la cita"
+                        [class.ng-invalid]="submitted && appointmentForm.get('motivo')?.invalid"
+                        fluid 
+                    />
+                    <small 
+                        class="text-red-500" 
+                        *ngIf="submitted && appointmentForm.get('motivo')?.errors?.['required']"
+                    >
+                        El motivo es requerido.
+                    </small>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-12 gap-4">
+                <div class="col-span-12">
+                    <label for="notas" class="block font-bold mb-2">Notas Adicionales</label>
+                    <textarea 
+                        id="notas" 
+                        pInputText
+                        formControlName="notas"
+                        placeholder="Ingrese notas adicionales (opcional)"
+                        rows="3"
+                        style="width: 100%; resize: vertical;"
+                    ></textarea>
+                </div>
+            </div>
+
+            <!-- Información adicional mostrada cuando se seleccionan opciones -->
+            <div class="grid grid-cols-12 gap-4" *ngIf="selectedPatient || selectedDoctor || selectedService">
+                <div class="col-span-12">
+                    <div class="bg-surface-50 dark:bg-surface-800 p-4 rounded-lg">
+                        <h6 class="font-bold mb-3">Información de la Cita</h6>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div *ngIf="selectedPatient">
+                                <p class="text-sm font-semibold text-surface-600 dark:text-surface-400">Paciente:</p>
+                                <p class="text-sm">{{ selectedPatient.nombreCompleto }}</p>
+                                <p class="text-xs text-surface-500">{{ selectedPatient.telefono }}</p>
+                            </div>
+                            <div *ngIf="selectedDoctor">
+                                <p class="text-sm font-semibold text-surface-600 dark:text-surface-400">Doctor:</p>
+                                <p class="text-sm">{{ selectedDoctor.nombreCompleto }}</p>
+                                <p class="text-xs text-surface-500">{{ selectedDoctor.especialidad }}</p>
+                            </div>
+                            <div *ngIf="selectedService">
+                                <p class="text-sm font-semibold text-surface-600 dark:text-surface-400">Servicio:</p>
+                                <p class="text-sm">{{ selectedService.nombre }}</p>
+                                <p class="text-xs text-surface-500">Duración: {{ selectedService.duracionMinutos }} min</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </ng-template>
+
+    <ng-template #footer>
+        <p-button 
+            label="Cancelar" 
+            icon="pi pi-times" 
+            text 
+            (click)="hideDialog()" 
+        />
+        <p-button 
+            [label]="isEditMode ? 'Actualizar' : 'Guardar'" 
+            icon="pi pi-check" 
+            (click)="saveAppointment()" 
+        />
+    </ng-template>
+</p-dialog>
+
+<!-- Dialog para detalles de la cita -->
+<p-dialog 
+    [(visible)]="appointmentDetailsDialog" 
+    [style]="{ width: '600px', height: 'auto', maxHeight: '90vh' }" 
+    header="Detalles de la Cita" 
+    [modal]="true"
+    [closable]="true"
+    [styleClass]="'appointment-details-dialog'"
+    [position]="'bottom'"
+    [draggable]="false"
+    [resizable]="false"
+>
+    <ng-template #content>
+        <div class="grid grid-cols-12 gap-4" *ngIf="appointment">
+            <div class="col-span-12">
+                <div class="bg-surface-0 dark:bg-surface-900 p-4 rounded-lg">
+                    <div class="text-center mb-6">
+                        <i class="pi pi-calendar text-8xl text-blue-500 mb-3 block" style="font-size: 5rem;"></i>
+                        <h3 class="text-xl font-bold text-surface-900 dark:text-surface-0">
+                            Cita del {{ appointment.fecha | date:'dd/MM/yyyy' }} a las {{ appointment.hora }}
+                        </h3>
+                        <p-tag 
+                            [value]="getStatusLabel(appointment.estado)" 
+                            [severity]="getStatusSeverity(appointment.estado)"
+                            class="mt-2"
+                        />
+                    </div>
+                    
+                    <div class="grid grid-cols-1 gap-4">
+                        <div class="flex items-center">
+                            <i class="pi pi-user text-surface-600 dark:text-surface-400 mr-3"></i>
+                            <div class="flex flex-col">
+                                <span class="font-bold text-lg text-surface-900 dark:text-surface-0">Paciente</span>
+                                <span class="text-surface-700 dark:text-surface-300">{{ getPatientName(appointment.pacienteId) }}</span>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center">
+                            <i class="pi pi-user-plus text-surface-600 dark:text-surface-400 mr-3"></i>
+                            <div class="flex flex-col">
+                                <span class="font-bold text-lg text-surface-900 dark:text-surface-0">Doctor</span>
+                                <span class="text-surface-700 dark:text-surface-300">{{ getDoctorName(appointment.doctorId) }}</span>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center">
+                            <i class="pi pi-cog text-surface-600 dark:text-surface-400 mr-3"></i>
+                            <div class="flex flex-col">
+                                <span class="font-bold text-lg text-surface-900 dark:text-surface-0">Servicio</span>
+                                <span class="text-surface-700 dark:text-surface-300">{{ getServiceName(appointment.servicioId) }}</span>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center">
+                            <i class="pi pi-info-circle text-surface-600 dark:text-surface-400 mr-3"></i>
+                            <div class="flex flex-col">
+                                <span class="font-bold text-lg text-surface-900 dark:text-surface-0">Motivo</span>
+                                <span class="text-surface-700 dark:text-surface-300">{{ appointment.motivo }}</span>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start" *ngIf="appointment.notas">
+                            <i class="pi pi-file-edit text-surface-600 dark:text-surface-400 mr-3 mt-2"></i>
+                            <div class="flex flex-col">
+                                <span class="font-bold text-lg text-surface-900 dark:text-surface-0">Notas</span>
+                                <span class="text-surface-700 dark:text-surface-300">{{ appointment.notas }}</span>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center" *ngIf="appointment.motivoCancelacion">
+                            <i class="pi pi-times-circle text-red-500 mr-3"></i>
+                            <div class="flex flex-col">
+                                <span class="font-bold text-lg text-red-600">Motivo de Cancelación</span>
+                                <span class="text-red-500">{{ appointment.motivoCancelacion }}</span>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center" *ngIf="appointment.fechaCreacion">
+                            <i class="pi pi-clock text-surface-600 dark:text-surface-400 mr-3"></i>
+                            <div class="flex flex-col">
+                                <span class="font-bold text-lg text-surface-900 dark:text-surface-0">Fecha de Creación</span>
+                                <span class="text-surface-700 dark:text-surface-300">{{ appointment.fechaCreacion | date:'dd/MM/yyyy HH:mm' }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ng-template>
+
+    <ng-template #footer>
+        <div class="flex justify-between w-full">
+            <p-button 
+                label="Editar" 
+                icon="pi pi-pencil" 
+                severity="secondary"
+                [disabled]="!canEditAppointment(appointment)"
+                (click)="editAppointmentFromDetails()" 
+            />
+            <p-button 
+                label="Cerrar" 
+                icon="pi pi-times" 
+                text 
+                (click)="hideDetailsDialog()" 
+            />
+        </div>
+    </ng-template>
+</p-dialog>
+
+<!-- Dialog para cancelar cita -->
+<p-dialog 
+    [(visible)]="cancelDialog" 
+    [style]="{ width: '500px' }" 
+    header="Cancelar Cita" 
+    [modal]="true"
+    [closable]="true"
+    [draggable]="false"
+    [resizable]="false"
+>
+    <ng-template #content>
+        <div *ngIf="appointmentToCancel">
+            <p class="mb-4">
+                ¿Está seguro de que desea cancelar la cita de 
+                <strong>{{ getPatientName(appointmentToCancel.pacienteId) }}</strong> 
+                programada para el 
+                <strong>{{ appointmentToCancel.fecha | date:'dd/MM/yyyy' }} a las {{ appointmentToCancel.hora }}</strong>?
+            </p>
+            
+            <div class="mb-4">
+                <label for="motivoCancelacion" class="block font-bold mb-2">Motivo de Cancelación *</label>
+                <textarea 
+                    id="motivoCancelacion" 
+                    pInputText
+                    [(ngModel)]="motivoCancelacionText"
+                    placeholder="Ingrese el motivo de la cancelación"
+                    rows="3"
+                    style="width: 100%; resize: vertical;"
+                ></textarea>
+            </div>
+        </div>
+    </ng-template>
+
+    <ng-template #footer>
+        <p-button 
+            label="Cancelar" 
+            icon="pi pi-times" 
+            text 
+            (click)="hideCancelDialog()" 
+        />
+        <p-button 
+            label="Confirmar Cancelación" 
+            icon="pi pi-check" 
+            severity="danger"
+            (click)="cancelAppointment()" 
+        />
+    </ng-template>
+</p-dialog>
+
+<p-confirmdialog [style]="{ width: '450px' }" />
+<p-toast />
