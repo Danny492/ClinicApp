@@ -50,42 +50,70 @@ export class AppointmentService {
             pacienteId: '1',
             doctorId: '1',
             servicioId: '1',
-            fecha: new Date('2024-12-20'),
+            fecha: new Date('2025-09-20'),
             hora: '09:00',
             duracion: 30,
             estado: 'confirmada',
             motivo: 'Consulta general',
             notas: 'Primera consulta del paciente',
-            fechaCreacion: new Date('2024-12-15'),
-            fechaModificacion: new Date('2024-12-15')
+            fechaCreacion: new Date('2025-09-15'),
+            fechaModificacion: new Date('2025-09-15')
         },
         {
             id: '2',
             pacienteId: '2',
             doctorId: '2',
             servicioId: '2',
-            fecha: new Date('2024-12-21'),
+            fecha: new Date('2025-09-21'),
             hora: '10:30',
             duracion: 45,
             estado: 'pendiente',
             motivo: 'Control de presión arterial',
             notas: 'Seguimiento mensual',
-            fechaCreacion: new Date('2024-12-16'),
-            fechaModificacion: new Date('2024-12-16')
+            fechaCreacion: new Date('2025-09-16'),
+            fechaModificacion: new Date('2025-09-16')
         },
         {
             id: '3',
             pacienteId: '3',
             doctorId: '1',
             servicioId: '3',
-            fecha: new Date('2024-12-22'),
+            fecha: new Date('2025-09-22'),
             hora: '14:00',
             duracion: 60,
             estado: 'cancelada',
             motivo: 'Consulta especializada',
             motivoCancelacion: 'Paciente canceló por motivos personales',
-            fechaCreacion: new Date('2024-12-17'),
-            fechaModificacion: new Date('2024-12-18')
+            fechaCreacion: new Date('2025-09-17'),
+            fechaModificacion: new Date('2025-09-18')
+        },
+        {
+            id: '4',
+            pacienteId: '1',
+            doctorId: '3',
+            servicioId: '4',
+            fecha: new Date('2025-09-25'),
+            hora: '11:00',
+            duracion: 20,
+            estado: 'pendiente',
+            motivo: 'Examen de laboratorio',
+            notas: 'Análisis de sangre de rutina',
+            fechaCreacion: new Date('2025-09-20'),
+            fechaModificacion: new Date('2025-09-20')
+        },
+        {
+            id: '5',
+            pacienteId: '2',
+            doctorId: '1',
+            servicioId: '1',
+            fecha: new Date('2025-09-28'),
+            hora: '15:30',
+            duracion: 30,
+            estado: 'confirmada',
+            motivo: 'Consulta de seguimiento',
+            notas: 'Revisión de tratamiento',
+            fechaCreacion: new Date('2025-09-22'),
+            fechaModificacion: new Date('2025-09-22')
         }
     ];
 
