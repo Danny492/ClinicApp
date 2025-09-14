@@ -528,10 +528,10 @@
                 <textarea 
                     id="motivoCancelacion" 
                     pInputText
+                    [(ngModel)]="motivoCancelacionText"
                     placeholder="Ingrese el motivo de la cancelación"
                     rows="3"
                     style="width: 100%; resize: vertical;"
-                    #motivoCancelacion
                 ></textarea>
             </div>
         </div>
@@ -548,7 +548,7 @@
             label="Confirmar Cancelación" 
             icon="pi pi-check" 
             severity="danger"
-            (click)="cancelAppointment(motivoCancelacion.value)" 
+            (click)="cancelAppointment()" 
         />
     </ng-template>
 </p-dialog>

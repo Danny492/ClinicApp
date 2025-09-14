@@ -79,6 +79,7 @@ export class Cita implements OnInit, AfterViewInit {
     selectedService: MedicalService | null = null;
     selectedPatient: Patient | null = null;
     appointmentToCancel: Appointment | null = null;
+    motivoCancelacionText: string = '';
 
     @ViewChild('dt') dt!: Table;
 
@@ -373,17 +374,19 @@ export class Cita implements OnInit, AfterViewInit {
 
     openCancelDialog(appointment: Appointment) {
         this.appointmentToCancel = appointment;
+        this.motivoCancelacionText = '';
         this.cancelDialog = true;
     }
 
     hideCancelDialog() {
         this.cancelDialog = false;
         this.appointmentToCancel = null;
+        this.motivoCancelacionText = '';
     }
 
-    cancelAppointment(motivoCancelacion: string) {
-        if (this.appointmentToCancel) {
-            this.appointmentService.cancelAppointment(this.appointmentToCancel.id!, motivoCancelacion).then((updatedAppointment) => {
+    cancelAppointment() {
+        if (this.appointmentToCancel && this.motivoCancelacionText.trim()) {
+            this.appointmentService.cancelAppointment(this.appointmentToCancel.id!, this.motivoCancelacionText.trim()).then((updatedAppointment) => {
                 if (updatedAppointment) {
                     const index = this.appointments().findIndex(a => a.id === updatedAppointment.id);
                     if (index !== -1) {
@@ -399,6 +402,13 @@ export class Cita implements OnInit, AfterViewInit {
                     });
                     this.hideCancelDialog();
                 }
+            });
+        } else if (!this.motivoCancelacionText.trim()) {
+            this.messageService.add({
+                severity: 'error',
+                summary: 'Error',
+                detail: 'Por favor ingrese el motivo de cancelación',
+                life: 3000
             });
         }
     }
