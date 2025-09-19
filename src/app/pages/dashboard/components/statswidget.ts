@@ -5,7 +5,7 @@ import { CommonModule } from '@angular/common';
     standalone: true,
     selector: 'app-stats-widget',
     imports: [CommonModule],
-    template: `<div class="col-span-12 lg:col-span-6 xl:col-span-3">
+    template: `<button class="col-span-12 lg:col-span-6 xl:col-span-3 bg-transparent border-none p-0 cursor-pointer" type="button">
             <div class="card mb-0">
                 <div class="flex justify-between mb-4">
                     <div>
@@ -19,8 +19,8 @@ import { CommonModule } from '@angular/common';
                 <span class="text-primary font-medium">24 new </span>
                 <span class="text-muted-color">since last visit</span>
             </div>
-        </div>
-        <div class="col-span-12 lg:col-span-6 xl:col-span-3">
+        </button>
+        <button class="col-span-12 lg:col-span-6 xl:col-span-3 bg-transparent border-none p-0 cursor-pointer" type="button">
             <div class="card mb-0">
                 <div class="flex justify-between mb-4">
                     <div>
@@ -34,8 +34,8 @@ import { CommonModule } from '@angular/common';
                 <span class="text-primary font-medium">%52+ </span>
                 <span class="text-muted-color">since last week</span>
             </div>
-        </div>
-        <div class="col-span-12 lg:col-span-6 xl:col-span-3">
+        </button>
+        <button class="col-span-12 lg:col-span-6 xl:col-span-3 bg-transparent border-none p-0 cursor-pointer" type="button">
             <div class="card mb-0">
                 <div class="flex justify-between mb-4">
                     <div>
@@ -49,8 +49,8 @@ import { CommonModule } from '@angular/common';
                 <span class="text-primary font-medium">520 </span>
                 <span class="text-muted-color">newly registered</span>
             </div>
-        </div>
-        <div class="col-span-12 lg:col-span-6 xl:col-span-3">
+        </button>
+        <button class="col-span-12 lg:col-span-6 xl:col-span-3 bg-transparent border-none p-0 cursor-pointer" type="button">
             <div class="card mb-0">
                 <div class="flex justify-between mb-4">
                     <div>
@@ -64,6 +64,6 @@ import { CommonModule } from '@angular/common';
                 <span class="text-primary font-medium">85 </span>
                 <span class="text-muted-color">responded</span>
             </div>
-        </div>`
+        </button>`
 })
 export class StatsWidget {}
