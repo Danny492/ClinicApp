@@ -8,7 +8,7 @@ import { LayoutService } from '../../../layout/service/layout.service';
     selector: 'app-revenue-stream-widget',
     imports: [ChartModule],
     template: `<div class="card mb-8!">
-        <div class="font-semibold text-xl mb-4">Revenue Stream</div>
+        <div class="font-semibold text-xl mb-4">Ingresos</div>
         <p-chart type="bar" [data]="chartData" [options]="chartOptions" class="h-100" />
     </div>`
 })
@@ -36,36 +36,37 @@ export class RevenueStreamWidget {
         const textMutedColor = documentStyle.getPropertyValue('--text-color-secondary');
 
         this.chartData = {
-            labels: ['Q1', 'Q2', 'Q3', 'Q4'],
+            labels: ['T1', 'T2', 'T3', 'T4'],
             datasets: [
                 {
                     type: 'bar',
-                    label: 'Subscriptions',
+                    label: 'Ingresos Totales por Trimestre',
                     backgroundColor: documentStyle.getPropertyValue('--p-primary-400'),
                     data: [4000, 10000, 15000, 4000],
-                    barThickness: 32
-                },
-                {
-                    type: 'bar',
-                    label: 'Advertising',
-                    backgroundColor: documentStyle.getPropertyValue('--p-primary-300'),
-                    data: [2100, 8400, 2400, 7500],
-                    barThickness: 32
-                },
-                {
-                    type: 'bar',
-                    label: 'Affiliate',
-                    backgroundColor: documentStyle.getPropertyValue('--p-primary-200'),
-                    data: [4100, 5200, 3400, 7400],
-                    borderRadius: {
-                        topLeft: 8,
-                        topRight: 8,
-                        bottomLeft: 0,
-                        bottomRight: 0
-                    },
-                    borderSkipped: false,
-                    barThickness: 32
+                    barThickness: 80
                 }
+                // ,
+                // {
+                //     type: 'bar',
+                //     label: 'Advertising',
+                //     backgroundColor: documentStyle.getPropertyValue('--p-primary-300'),
+                //     data: [2100, 8400, 2400, 7500],
+                //     barThickness: 32
+                // },
+                // {
+                //     type: 'bar',
+                //     label: 'Affiliate',
+                //     backgroundColor: documentStyle.getPropertyValue('--p-primary-200'),
+                //     data: [4100, 5200, 3400, 7400],
+                //     borderRadius: {
+                //         topLeft: 8,
+                //         topRight: 8,
+                //         bottomLeft: 0,
+                //         bottomRight: 0
+                //     },
+                //     borderSkipped: false,
+                //     barThickness: 32
+                // }
             ]
         };
 
