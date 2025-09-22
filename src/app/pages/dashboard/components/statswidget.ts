@@ -1,4 +1,3 @@
-import { Router } from '@angular/router';
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
@@ -25,7 +24,7 @@ import { RouterModule } from '@angular/router';
                 </div>
             </div>
         </button>
-        <button class="col-span-12 lg:col-span-6 xl:col-span-3 bg-transparent border-none p-0 cursor-pointer" type="button">
+        <button class="col-span-12 lg:col-span-6 xl:col-span-3 bg-transparent border-none p-0 cursor-pointer" [routerLink]="['/pages/ingresos']" routerLinkActive="router-link-active" type="button">
             <div class="card mb-0">
                 <div class="flex justify-between mb-4">
                     <div>
@@ -42,11 +41,11 @@ import { RouterModule } from '@angular/router';
                 </div>
             </div>
         </button>
-        <button class="col-span-12 lg:col-span-6 xl:col-span-3 bg-transparent border-none p-0 cursor-pointer" type="button">
+        <button class="col-span-12 lg:col-span-6 xl:col-span-3 bg-transparent border-none p-0 cursor-pointer" [routerLink]="['/pages/historial']" type="button">
             <div class="card mb-0">
                 <div class="flex justify-between mb-4">
                     <div>
-                        <span class="block text-muted-color font-medium mb-4">Pacientes Atendidos</span>
+                        <span class="block text-muted-color font-medium mb-4">Pacientes Atendidos Hoy</span>
                         <div class="text-surface-900 dark:text-surface-0 font-medium text-xl text-left">28441</div>
                     </div>
                     <div class="flex items-center justify-center bg-cyan-100 dark:bg-cyan-400/10 rounded-border" style="width: 2.5rem; height: 2.5rem">
@@ -59,7 +58,8 @@ import { RouterModule } from '@angular/router';
                 </div>
             </div>
         </button>
-        <button class="col-span-12 lg:col-span-6 xl:col-span-3 bg-transparent border-none p-0 cursor-pointer" type="button">
+        <button class="col-span-12 lg:col-span-6 xl:col-span-3 bg-transparent border-none p-0 cursor-pointer" [routerLink]="['/pages/citas']" routerLinkActive="router-link-active"
+         type="button">
             <div class="card mb-0">
                 <div class="flex justify-between mb-4">
                     <div>
@@ -79,7 +79,4 @@ import { RouterModule } from '@angular/router';
 })
 export class StatsWidget {
 
-redirectToPatients() {
-
-}
 }
