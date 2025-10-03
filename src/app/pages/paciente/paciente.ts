@@ -37,7 +37,7 @@ function createUniqueValidator(
         if (!control.value) {
             return new Observable(observer => observer.next(null));
         }
-        
+
         return new Observable(observer => {
             validatorFn(control.value, excludeId).then(isUnique => {
                 observer.next(isUnique ? null : { unique: true });
@@ -70,29 +70,29 @@ function createUniqueValidator(
     template: `
         <p-toolbar styleClass="mb-6">
             <ng-template #start>
-                <p-button 
-                    label="Nuevo Paciente" 
-                    icon="pi pi-plus" 
-                    severity="secondary" 
-                    class="mr-2" 
-                    (onClick)="openNew()" 
+                <p-button
+                    label="Nuevo Paciente"
+                    icon="pi pi-plus"
+                    severity="secondary"
+                    class="mr-2"
+                    (onClick)="openNew()"
                 />
-                <p-button 
-                    severity="secondary" 
-                    label="Eliminar Seleccionados" 
-                    icon="pi pi-trash" 
-                    outlined 
-                    (onClick)="deleteSelectedPatients()" 
-                    [disabled]="!selectedPatients || !selectedPatients.length" 
+                <p-button
+                    severity="secondary"
+                    label="Eliminar Seleccionados"
+                    icon="pi pi-trash"
+                    outlined
+                    (onClick)="deleteSelectedPatients()"
+                    [disabled]="!selectedPatients || !selectedPatients.length"
                 />
             </ng-template>
 
             <ng-template #end>
-                <p-button 
-                    label="Exportar" 
-                    icon="pi pi-upload" 
-                    severity="secondary" 
-                    (onClick)="exportCSV()" 
+                <p-button
+                    label="Exportar"
+                    icon="pi pi-upload"
+                    severity="secondary"
+                    (onClick)="exportCSV()"
                 />
             </ng-template>
         </p-toolbar>
@@ -117,17 +117,17 @@ function createUniqueValidator(
                     <h5 class="m-0 text-center lg:text-left">Gestión de Pacientes</h5>
                     <p-iconfield class="w-full lg:w-auto">
                         <p-inputicon styleClass="pi pi-search" />
-                        <input 
-                            pInputText 
-                            type="text" 
-                            (input)="onGlobalFilter(dt, $event)" 
-                            placeholder="Buscar por nombre, cédula o correo..." 
+                        <input
+                            pInputText
+                            type="text"
+                            (input)="onGlobalFilter(dt, $event)"
+                            placeholder="Buscar por nombre, cédula o correo..."
                             class="w-full"
                         />
                     </p-iconfield>
                 </div>
             </ng-template>
-            
+
             <ng-template #header>
                 <tr>
                     <th style="width: 3rem">
@@ -156,7 +156,7 @@ function createUniqueValidator(
                     <th style="min-width: 12rem">Acciones</th>
                 </tr>
             </ng-template>
-            
+
             <ng-template #body let-patient>
                 <tr (click)="showPatientDetails(patient)" style="cursor: pointer;">
                     <td style="width: 3rem" (click)="$event.stopPropagation()">
@@ -168,29 +168,29 @@ function createUniqueValidator(
                     <td style="min-width: 16rem">{{ patient.correoElectronico }}</td>
                     <td style="min-width: 10rem">{{ patient.genero }}</td>
                     <td (click)="$event.stopPropagation()">
-                        <p-button 
-                            icon="pi pi-pencil" 
-                            class="mr-2" 
-                            [rounded]="true" 
-                            [outlined]="true" 
-                            (click)="editPatient(patient)" 
+                        <p-button
+                            icon="pi pi-pencil"
+                            class="mr-2"
+                            [rounded]="true"
+                            [outlined]="true"
+                            (click)="editPatient(patient)"
                         />
-                        <p-button 
-                            icon="pi pi-trash" 
-                            severity="danger" 
-                            [rounded]="true" 
-                            [outlined]="true" 
-                            (click)="deletePatient(patient)" 
+                        <p-button
+                            icon="pi pi-trash"
+                            severity="danger"
+                            [rounded]="true"
+                            [outlined]="true"
+                            (click)="deletePatient(patient)"
                         />
                     </td>
                 </tr>
             </ng-template>
         </p-table>
 
-        <p-dialog 
-            [(visible)]="patientDialog" 
-            [style]="{ width: '600px' }" 
-            [header]="isEditMode ? 'Editar Paciente' : 'Nuevo Paciente'" 
+        <p-dialog
+            [(visible)]="patientDialog"
+            [style]="{ width: '600px' }"
+            [header]="isEditMode ? 'Editar Paciente' : 'Nuevo Paciente'"
             [modal]="true"
             [closable]="true"
             [draggable]="false"
@@ -202,23 +202,23 @@ function createUniqueValidator(
                     <div class="grid grid-cols-12 gap-4">
                         <div class="col-span-12">
                             <label for="nombreCompleto" class="block font-bold mb-2">Nombre Completo *</label>
-                            <input 
-                                type="text" 
-                                pInputText 
-                                id="nombreCompleto" 
+                            <input
+                                type="text"
+                                pInputText
+                                id="nombreCompleto"
                                 formControlName="nombreCompleto"
                                 placeholder="Ingrese el nombre completo"
                                 [class.ng-invalid]="submitted && patientForm.get('nombreCompleto')?.invalid"
-                                fluid 
+                                fluid
                             />
-                             <small 
-                                 class="text-red-500" 
+                             <small
+                                 class="text-red-500"
                                  *ngIf="submitted && patientForm.get('nombreCompleto')?.errors?.['required']"
                              >
                                  El nombre completo es requerido.
                              </small>
-                             <small 
-                                 class="text-red-500" 
+                             <small
+                                 class="text-red-500"
                                  *ngIf="patientForm.get('nombreCompleto')?.errors?.['unique']"
                              >
                                  Este nombre completo ya está registrado.
@@ -229,30 +229,30 @@ function createUniqueValidator(
                     <div class="grid grid-cols-12 gap-4">
                         <div class="col-span-6">
                             <label for="cedula" class="block font-bold mb-2">Cédula *</label>
-                            <input 
-                                type="text" 
-                                pInputText 
-                                id="cedula" 
+                            <input
+                                type="text"
+                                pInputText
+                                id="cedula"
                                 formControlName="cedula"
                                 placeholder="12345678901"
                                 maxlength="13"
                                 [class.ng-invalid]="submitted && patientForm.get('cedula')?.invalid"
-                                fluid 
+                                fluid
                             />
-                            <small 
-                                class="text-red-500" 
+                            <small
+                                class="text-red-500"
                                 *ngIf="submitted && patientForm.get('cedula')?.errors?.['required']"
                             >
                                 La cédula es requerida.
                             </small>
-                             <small 
-                                 class="text-red-500" 
+                             <small
+                                 class="text-red-500"
                                  *ngIf="submitted && patientForm.get('cedula')?.errors?.['pattern']"
                              >
                                  La cédula debe tener el formato XXX-XXXXXXX-X (11 dígitos).
                              </small>
-                             <small 
-                                 class="text-red-500" 
+                             <small
+                                 class="text-red-500"
                                  *ngIf="patientForm.get('cedula')?.errors?.['unique']"
                              >
                                  Esta cédula ya está registrada.
@@ -260,17 +260,17 @@ function createUniqueValidator(
                         </div>
                         <div class="col-span-6">
                             <label for="fechaNacimiento" class="block font-bold mb-2">Fecha de Nacimiento *</label>
-                            <input 
-                                type="date" 
-                                pInputText 
-                                id="fechaNacimiento" 
+                            <input
+                                type="date"
+                                pInputText
+                                id="fechaNacimiento"
                                 formControlName="fechaNacimiento"
                                 [max]="maxDate.toISOString().split('T')[0]"
                                 [class.ng-invalid]="submitted && patientForm.get('fechaNacimiento')?.invalid"
                                 fluid
                             />
-                            <small 
-                                class="text-red-500" 
+                            <small
+                                class="text-red-500"
                                 *ngIf="submitted && patientForm.get('fechaNacimiento')?.errors?.['required']"
                             >
                                 La fecha de nacimiento es requerida.
@@ -281,18 +281,18 @@ function createUniqueValidator(
                     <div class="grid grid-cols-12 gap-4">
                         <div class="col-span-6">
                             <label for="genero" class="block font-bold mb-2">Género *</label>
-                            <p-select 
-                                id="genero" 
+                            <p-select
+                                id="genero"
                                 formControlName="genero"
-                                [options]="generoOptions" 
-                                optionLabel="label" 
-                                optionValue="value" 
+                                [options]="generoOptions"
+                                optionLabel="label"
+                                optionValue="value"
                                 placeholder="Seleccione género"
                                 [class.ng-invalid]="submitted && patientForm.get('genero')?.invalid"
-                                fluid 
+                                fluid
                             />
-                            <small 
-                                class="text-red-500" 
+                            <small
+                                class="text-red-500"
                                 *ngIf="submitted && patientForm.get('genero')?.errors?.['required']"
                             >
                                 El género es requerido.
@@ -300,17 +300,17 @@ function createUniqueValidator(
                         </div>
                         <div class="col-span-6">
                             <label for="telefono" class="block font-bold mb-2">Teléfono *</label>
-                            <input 
-                                type="tel" 
-                                pInputText 
-                                id="telefono" 
+                            <input
+                                type="tel"
+                                pInputText
+                                id="telefono"
                                 formControlName="telefono"
                                 placeholder="Número de teléfono"
                                 [class.ng-invalid]="submitted && patientForm.get('telefono')?.invalid"
-                                fluid 
+                                fluid
                             />
-                            <small 
-                                class="text-red-500" 
+                            <small
+                                class="text-red-500"
                                 *ngIf="submitted && patientForm.get('telefono')?.errors?.['required']"
                             >
                                 El teléfono es requerido.
@@ -321,29 +321,29 @@ function createUniqueValidator(
                     <div class="grid grid-cols-12 gap-4">
                         <div class="col-span-12">
                             <label for="correoElectronico" class="block font-bold mb-2">Correo Electrónico *</label>
-                            <input 
-                                type="email" 
-                                pInputText 
-                                id="correoElectronico" 
+                            <input
+                                type="email"
+                                pInputText
+                                id="correoElectronico"
                                 formControlName="correoElectronico"
                                 placeholder="correo@ejemplo.com"
                                 [class.ng-invalid]="submitted && patientForm.get('correoElectronico')?.invalid"
-                                fluid 
+                                fluid
                             />
-                            <small 
-                                class="text-red-500" 
+                            <small
+                                class="text-red-500"
                                 *ngIf="submitted && patientForm.get('correoElectronico')?.errors?.['required']"
                             >
                                 El correo electrónico es requerido.
                             </small>
-                             <small 
-                                 class="text-red-500" 
+                             <small
+                                 class="text-red-500"
                                  *ngIf="submitted && patientForm.get('correoElectronico')?.errors?.['email']"
                              >
                                  Ingrese un correo electrónico válido.
                              </small>
-                             <small 
-                                 class="text-red-500" 
+                             <small
+                                 class="text-red-500"
                                  *ngIf="patientForm.get('correoElectronico')?.errors?.['unique']"
                              >
                                  Este correo electrónico ya está registrado.
@@ -354,8 +354,8 @@ function createUniqueValidator(
                     <div class="grid grid-cols-12 gap-4">
                         <div class="col-span-12">
                             <label for="direccion" class="block font-bold mb-2">Dirección *</label>
-                            <textarea 
-                                id="direccion" 
+                            <textarea
+                                id="direccion"
                                 pInputText
                                 formControlName="direccion"
                                 placeholder="Ingrese la dirección completa"
@@ -363,14 +363,14 @@ function createUniqueValidator(
                                 [class.ng-invalid]="submitted && patientForm.get('direccion')?.invalid"
                                 style="width: 100%; resize: vertical;"
                             ></textarea>
-                            <small 
-                                class="text-red-500" 
+                            <small
+                                class="text-red-500"
                                 *ngIf="submitted && patientForm.get('direccion')?.errors?.['required']"
                             >
                                 La dirección es requerida.
                             </small>
-                            <small 
-                                class="text-red-500" 
+                            <small
+                                class="text-red-500"
                                 *ngIf="submitted && patientForm.get('direccion')?.errors?.['minlength']"
                             >
                                 La dirección debe tener al menos 10 caracteres.
@@ -381,24 +381,24 @@ function createUniqueValidator(
             </ng-template>
 
             <ng-template #footer>
-                <p-button 
-                    label="Cancelar" 
-                    icon="pi pi-times" 
-                    text 
-                    (click)="hideDialog()" 
+                <p-button
+                    label="Cancelar"
+                    icon="pi pi-times"
+                    text
+                    (click)="hideDialog()"
                 />
-                <p-button 
-                    [label]="isEditMode ? 'Actualizar' : 'Guardar'" 
-                    icon="pi pi-check" 
-                    (click)="savePatient()" 
+                <p-button
+                    [label]="isEditMode ? 'Actualizar' : 'Guardar'"
+                    icon="pi pi-check"
+                    (click)="savePatient()"
                 />
             </ng-template>
         </p-dialog>
 
-        <p-dialog 
-            [(visible)]="patientDetailsDialog" 
-            [style]="{ width: '500px', height: 'auto', maxHeight: '90vh' }" 
-            header="Detalles del Paciente" 
+        <p-dialog
+            [(visible)]="patientDetailsDialog"
+            [style]="{ width: '500px', height: 'auto', maxHeight: '90vh' }"
+            header="Detalles del Paciente"
             [modal]="true"
             [closable]="true"
             [styleClass]="'patient-details-dialog'"
@@ -414,7 +414,7 @@ function createUniqueValidator(
                                     <i class="pi pi-user text-8xl text-blue-500 mb-3 block" style="font-size: 5rem;"></i>
                                 <h3 class="text-xl font-bold text-surface-900 dark:text-surface-0">{{ patient.nombreCompleto }}</h3>
                             </div>
-                            
+
                             <div class="grid grid-cols-1 gap-4">
                                 <div class="flex items-center">
                                     <i class="pi pi-id-card text-surface-600 dark:text-surface-400 mr-3"></i>
@@ -423,7 +423,7 @@ function createUniqueValidator(
                                         <span class="text-surface-700 dark:text-surface-300">{{ patient.cedula }}</span>
                                     </div>
                                 </div>
-                                
+
                                 <div class="flex items-center">
                                     <i class="pi pi-calendar text-surface-600 dark:text-surface-400 mr-3"></i>
                                     <div class="flex flex-col">
@@ -431,7 +431,7 @@ function createUniqueValidator(
                                         <span class="text-surface-700 dark:text-surface-300">{{ patient.fechaNacimiento | date:'dd/MM/yyyy' }}</span>
                                     </div>
                                 </div>
-                                
+
                                 <div class="flex items-center">
                                     <i class="pi pi-users text-surface-600 dark:text-surface-400 mr-3"></i>
                                     <div class="flex flex-col">
@@ -439,7 +439,7 @@ function createUniqueValidator(
                                         <span class="text-surface-700 dark:text-surface-300">{{ patient.genero }}</span>
                                     </div>
                                 </div>
-                                
+
                                 <div class="flex items-center">
                                     <i class="pi pi-phone text-surface-600 dark:text-surface-400 mr-3"></i>
                                     <div class="flex flex-col">
@@ -447,7 +447,7 @@ function createUniqueValidator(
                                         <span class="text-surface-700 dark:text-surface-300">{{ patient.telefono }}</span>
                                     </div>
                                 </div>
-                                
+
                                 <div class="flex items-center">
                                     <i class="pi pi-envelope text-surface-600 dark:text-surface-400 mr-3"></i>
                                     <div class="flex flex-col">
@@ -455,7 +455,7 @@ function createUniqueValidator(
                                         <span class="text-surface-700 dark:text-surface-300">{{ patient.correoElectronico }}</span>
                                     </div>
                                 </div>
-                                
+
                                 <div class="flex items-start">
                                     <i class="pi pi-map-marker text-surface-600 dark:text-surface-400 mr-3 mt-2"></i>
                                     <div class="flex flex-col">
@@ -463,7 +463,7 @@ function createUniqueValidator(
                                         <span class="text-surface-700 dark:text-surface-300">{{ patient.direccion }}</span>
                                     </div>
                                 </div>
-                                
+
                                 <div class="flex items-center" *ngIf="patient.fechaRegistro">
                                     <i class="pi pi-clock text-surface-600 dark:text-surface-400 mr-3"></i>
                                     <div class="flex flex-col">
@@ -479,17 +479,17 @@ function createUniqueValidator(
 
             <ng-template #footer>
                 <div class="flex justify-between w-full">
-                    <p-button 
-                        label="Editar" 
-                        icon="pi pi-pencil" 
+                    <p-button
+                        label="Editar"
+                        icon="pi pi-pencil"
                         severity="secondary"
-                        (click)="editPatientFromDetails()" 
+                        (click)="editPatientFromDetails()"
                     />
-                    <p-button 
-                        label="Cerrar" 
-                        icon="pi pi-times" 
-                        text 
-                        (click)="hideDetailsDialog()" 
+                    <p-button
+                        label="Cerrar"
+                        icon="pi pi-times"
+                        text
+                        (click)="hideDetailsDialog()"
                     />
                 </div>
             </ng-template>
@@ -506,19 +506,19 @@ function createUniqueValidator(
             flex-direction: column;
             height: 100%;
         }
-        
+
         :host ::ng-deep .patient-details-dialog .p-dialog-content > div {
             flex: 1;
             display: flex;
             flex-direction: column;
             justify-content: flex-end;
         }
-        
+
         :host ::ng-deep .patient-details-dialog .p-dialog-content .bg-surface-0,
         :host ::ng-deep .patient-details-dialog .p-dialog-content .dark\\:bg-surface-900 {
             margin-bottom: 0;
         }
-        
+
         :host ::ng-deep .patient-details-dialog .p-dialog-footer {
             margin-top: 0;
             padding-top: 1rem;
@@ -556,20 +556,20 @@ export class Paciente implements OnInit {
         private fb: FormBuilder
     ) {
         this.patientForm = this.fb.group({
-            nombreCompleto: ['', 
-                [Validators.required, Validators.minLength(2)], 
+            nombreCompleto: ['',
+                [Validators.required, Validators.minLength(2)],
                 [createUniqueValidator(this.patientService.isNombreCompletoUnique.bind(this.patientService))]
             ],
-            cedula: ['', 
-                [Validators.required, Validators.pattern(/^\d{3}-\d{7}-\d{1}$/)], 
+            cedula: ['',
+                [Validators.required, Validators.pattern(/^\d{3}-\d{7}-\d{1}$/)],
                 [createUniqueValidator(this.patientService.isCedulaUnique.bind(this.patientService))]
             ],
             fechaNacimiento: ['', Validators.required],
             genero: ['', Validators.required],
             direccion: ['', [Validators.required, Validators.minLength(10)]],
             telefono: ['', [Validators.required, Validators.pattern(/^[0-9+\-\s()]+$/)]],
-            correoElectronico: ['', 
-                [Validators.required, Validators.email], 
+            correoElectronico: ['',
+                [Validators.required, Validators.email],
                 [createUniqueValidator(this.patientService.isCorreoElectronicoUnique.bind(this.patientService))]
             ]
         });
@@ -596,9 +596,9 @@ export class Paciente implements OnInit {
             { field: 'genero', header: 'Género' }
         ];
 
-        this.exportColumns = this.cols.map((col) => ({ 
-            title: col.header, 
-            dataKey: col.field 
+        this.exportColumns = this.cols.map((col) => ({
+            title: col.header,
+            dataKey: col.field
         }));
     }
 
@@ -618,10 +618,10 @@ export class Paciente implements OnInit {
     formatCedula(value: string): string {
         // Remover todos los caracteres que no sean números
         const numbersOnly = value.replace(/\D/g, '');
-        
+
         // Limitar a 11 dígitos máximo
         const limitedNumbers = numbersOnly.substring(0, 11);
-        
+
         // Aplicar formato XXX-XXXXXXX-X
         if (limitedNumbers.length <= 3) {
             return limitedNumbers;
@@ -687,10 +687,10 @@ export class Paciente implements OnInit {
         this.isEditMode = true;
         this.patient = { ...patient };
         this.submitted = false;
-        
+
         // Actualizar los validadores para excluir el ID del paciente actual
         this.updateValidatorsForEdit(patient.id);
-        
+
         this.patientForm.patchValue({
             nombreCompleto: patient.nombreCompleto,
             cedula: patient.cedula,
@@ -700,7 +700,7 @@ export class Paciente implements OnInit {
             telefono: patient.telefono,
             correoElectronico: patient.correoElectronico
         });
-        
+
         this.patientDialog = true;
     }
 

@@ -5,6 +5,7 @@ import { Empty } from './empty/empty';
 import { Paciente } from './paciente/paciente';
 import { DoctorComponent } from './doctor/doctor';
 import { Cita } from './cita/cita';
+import { Ingreso } from './ingreso/ingreso';
 
 export default [
     { path: 'documentation', component: Documentation },
@@ -13,5 +14,6 @@ export default [
     { path: 'doctores', component: DoctorComponent },
     { path: 'citas', component: Cita },
     { path: 'empty', component: Empty },
+    { path: 'ingresos', component: Ingreso},
     { path: '**', redirectTo: '/notfound' }
 ] as Routes;

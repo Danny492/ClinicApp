@@ -96,6 +96,11 @@ export class AppMenu {
                         routerLink: ['/pages/citas']
                     },
                     {
+                        label: 'Ingresos',
+                        icon: 'pi pi-fw pi-dollar',
+                        routerLink: ['/pages/ingresos']
+                    },
+                    {
                         label: 'Not Found',
                         icon: 'pi pi-fw pi-exclamation-circle',
                         routerLink: ['/pages/notfound']
