@@ -12,6 +12,8 @@ export interface Patient {
     fechaRegistro?: Date;
 }
 
+
+
 @Injectable()
 export class PatientService {
     private patients: Patient[] = [
@@ -101,8 +103,8 @@ export class PatientService {
     isNombreCompletoUnique(nombreCompleto: string, excludeId?: string): Promise<boolean> {
         return new Promise((resolve) => {
             setTimeout(() => {
-                const exists = this.patients.some(p => 
-                    p.nombreCompleto.toLowerCase() === nombreCompleto.toLowerCase() && 
+                const exists = this.patients.some(p =>
+                    p.nombreCompleto.toLowerCase() === nombreCompleto.toLowerCase() &&
                     p.id !== excludeId
                 );
                 resolve(!exists);
@@ -113,8 +115,8 @@ export class PatientService {
     isCedulaUnique(cedula: string, excludeId?: string): Promise<boolean> {
         return new Promise((resolve) => {
             setTimeout(() => {
-                const exists = this.patients.some(p => 
-                    p.cedula === cedula && 
+                const exists = this.patients.some(p =>
+                    p.cedula === cedula &&
                     p.id !== excludeId
                 );
                 resolve(!exists);
@@ -125,8 +127,8 @@ export class PatientService {
     isCorreoElectronicoUnique(correoElectronico: string, excludeId?: string): Promise<boolean> {
         return new Promise((resolve) => {
             setTimeout(() => {
-                const exists = this.patients.some(p => 
-                    p.correoElectronico.toLowerCase() === correoElectronico.toLowerCase() && 
+                const exists = this.patients.some(p =>
+                    p.correoElectronico.toLowerCase() === correoElectronico.toLowerCase() &&
                     p.id !== excludeId
                 );
                 resolve(!exists);
