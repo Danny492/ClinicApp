@@ -204,179 +204,137 @@ function createUniqueValidator(
                 <form [formGroup]="incomeForm" class="flex flex-col gap-4">
                     <div class="grid grid-cols-12 gap-4">
                         <div class="col-span-12">
-                            <label for="nombreCompleto" class="block font-bold mb-2">Nombre Completo *</label>
+                            <label for="patient" class="block font-bold mb-2">Paciente *</label>
                             <input
                                 type="text"
                                 pInputText
-                                id="nombreCompleto"
-                                formControlName="nombreCompleto"
-                                placeholder="Ingrese el nombre completo"
-                                [class.ng-invalid]="submitted && incomeForm.get('nombreCompleto')?.invalid"
+                                id="patient"
+                                formControlName="patient"
+                                placeholder="Ingrese el nombre del paciente"
+                                [class.ng-invalid]="submitted && incomeForm.get('patient')?.invalid"
                                 fluid
                             />
                              <small
                                  class="text-red-500"
-                                 *ngIf="submitted && incomeForm.get('nombreCompleto')?.errors?.['required']"
+                                 *ngIf="submitted && incomeForm.get('patient')?.errors?.['required']"
                              >
-                                 El nombre completo es requerido.
+                                 El nombre del paciente es requerido.
                              </small>
                              <small
                                  class="text-red-500"
-                                 *ngIf="incomeForm.get('nombreCompleto')?.errors?.['unique']"
+                                 *ngIf="incomeForm.get('patient')?.errors?.['unique']"
                              >
-                                 Este nombre completo ya está registrado.
+                                 Este nombre del paciente ya está registrado.
                              </small>
                         </div>
                     </div>
 
                     <div class="grid grid-cols-12 gap-4">
                         <div class="col-span-6">
-                            <label for="cedula" class="block font-bold mb-2">Cédula *</label>
+                            <label for="service" class="block font-bold mb-2">Servicio *</label>
                             <input
                                 type="text"
                                 pInputText
-                                id="cedula"
-                                formControlName="cedula"
-                                placeholder="12345678901"
-                                maxlength="13"
-                                [class.ng-invalid]="submitted && incomeForm.get('cedula')?.invalid"
+                                id="service"
+                                formControlName="service"
+                                placeholder="Ingrese el servicio"
+                                [class.ng-invalid]="submitted && incomeForm.get('service')?.invalid"
                                 fluid
                             />
                             <small
                                 class="text-red-500"
-                                *ngIf="submitted && incomeForm.get('cedula')?.errors?.['required']"
+                                *ngIf="submitted && incomeForm.get('service')?.errors?.['required']"
                             >
-                                La cédula es requerida.
+                                El servicio es requerido.
                             </small>
                              <small
                                  class="text-red-500"
-                                 *ngIf="submitted && incomeForm.get('cedula')?.errors?.['pattern']"
+                                 *ngIf="incomeForm.get('service')?.errors?.['unique']"
                              >
-                                 La cédula debe tener el formato XXX-XXXXXXX-X (11 dígitos).
-                             </small>
-                             <small
-                                 class="text-red-500"
-                                 *ngIf="incomeForm.get('cedula')?.errors?.['unique']"
-                             >
-                                 Esta cédula ya está registrada.
+                                 Este servicio ya está registrado.
                              </small>
                         </div>
                         <div class="col-span-6">
-                            <label for="fechaNacimiento" class="block font-bold mb-2">Fecha de Nacimiento *</label>
+                            <label for="amount" class="block font-bold mb-2">Monto *</label>
+                            <input
+                                type="number"
+                                pInputText
+                                id="amount"
+                                formControlName="amount"
+                                placeholder="Ingrese el monto"
+                                [class.ng-invalid]="submitted && incomeForm.get('amount')?.invalid"
+                                fluid
+                            />
+                            <small
+                                class="text-red-500"
+                                *ngIf="submitted && incomeForm.get('amount')?.errors?.['required']"
+                            >
+                                El monto es requerido.
+                            </small>
+                            <small
+                                class="text-red-500"
+                                *ngIf="submitted && incomeForm.get('amount')?.errors?.['min']"
+                            >
+                                El monto debe ser mayor que 0.
+                            </small>
+                        </div>
+                        <div class="col-span-6">
+                            <label for="paymentMethod" class="block font-bold mb-2">Metodo de Pago *</label>
+                            <input
+                                type="text"
+                                pInputText
+                                id="paymentMethod"
+                                formControlName="paymentMethod"
+                                placeholder="Ingrese el método de pago"
+                                [class.ng-invalid]="submitted && incomeForm.get('paymentMethod')?.invalid"
+                                fluid
+                            />
+                            <small
+                                class="text-red-500"
+                                *ngIf="submitted && incomeForm.get('paymentMethod')?.errors?.['required']"
+                            >
+                                El método de pago es requerido.
+                            </small>
+                        </div>
+                        <div class="col-span-6">
+                            <label for="paymentDate" class="block font-bold mb-2">Fecha de Pago *</label>
                             <input
                                 type="date"
                                 pInputText
-                                id="fechaNacimiento"
-                                formControlName="fechaNacimiento"
-                                [max]="maxDate.toISOString().split('T')[0]"
-                                [class.ng-invalid]="submitted && incomeForm.get('fechaNacimiento')?.invalid"
+                                id="paymentDate"
+                                formControlName="paymentDate"
+                                [class.ng-invalid]="submitted && incomeForm.get('paymentDate')?.invalid"
                                 fluid
                             />
                             <small
                                 class="text-red-500"
-                                *ngIf="submitted && incomeForm.get('fechaNacimiento')?.errors?.['required']"
+                                *ngIf="submitted && incomeForm.get('paymentDate')?.errors?.['required']"
                             >
-                                La fecha de nacimiento es requerida.
+                                La fecha de pago es requerida.
+                            </small>
+                            <small
+                                class="text-red-500"
+                                *ngIf="submitted && incomeForm.get('paymentDate')?.errors?.['min']"
+                            >
+                                La fecha de pago debe ser posterior a hoy.
                             </small>
                         </div>
-                    </div>
-
-                    <div class="grid grid-cols-12 gap-4">
-                        <!-- <div class="col-span-6">
-                            <label for="genero" class="block font-bold mb-2">Género *</label>
-                            <p-select
-                                id="genero"
-                                formControlName="genero"
-                                [options]="generoOptions"
-                                optionLabel="label"
-                                optionValue="value"
-                                placeholder="Seleccione género"
-                                [class.ng-invalid]="submitted && patientForm.get('genero')?.invalid"
-                                fluid
-                            />
-                            <small
-                                class="text-red-500"
-                                *ngIf="submitted && patientForm.get('genero')?.errors?.['required']"
-                            >
-                                El género es requerido.
-                            </small>
-                        </div> -->
                         <div class="col-span-6">
-                            <label for="telefono" class="block font-bold mb-2">Teléfono *</label>
+                            <label for="paymentRecordedBy" class="block font-bold mb-2">Registrado por *</label>
                             <input
-                                type="tel"
+                                type="text"
                                 pInputText
-                                id="telefono"
-                                formControlName="telefono"
-                                placeholder="Número de teléfono"
-                                [class.ng-invalid]="submitted && incomeForm.get('telefono')?.invalid"
+                                id="paymentRecordedBy"
+                                formControlName="paymentRecordedBy"
+                                placeholder="Personal que registró el pago"
+                                [class.ng-invalid]="submitted && incomeForm.get('paymentRecordedBy')?.invalid"
                                 fluid
                             />
                             <small
                                 class="text-red-500"
-                                *ngIf="submitted && incomeForm.get('telefono')?.errors?.['required']"
+                                *ngIf="submitted && incomeForm.get('paymentRecordedBy')?.errors?.['required']"
                             >
-                                El teléfono es requerido.
-                            </small>
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-12 gap-4">
-                        <div class="col-span-12">
-                            <label for="correoElectronico" class="block font-bold mb-2">Correo Electrónico *</label>
-                            <input
-                                type="email"
-                                pInputText
-                                id="correoElectronico"
-                                formControlName="correoElectronico"
-                                placeholder="correo@ejemplo.com"
-                                [class.ng-invalid]="submitted && incomeForm.get('correoElectronico')?.invalid"
-                                fluid
-                            />
-                            <small
-                                class="text-red-500"
-                                *ngIf="submitted && incomeForm.get('correoElectronico')?.errors?.['required']"
-                            >
-                                El correo electrónico es requerido.
-                            </small>
-                             <small
-                                 class="text-red-500"
-                                 *ngIf="submitted && incomeForm.get('correoElectronico')?.errors?.['email']"
-                             >
-                                 Ingrese un correo electrónico válido.
-                             </small>
-                             <small
-                                 class="text-red-500"
-                                 *ngIf="incomeForm.get('correoElectronico')?.errors?.['unique']"
-                             >
-                                 Este correo electrónico ya está registrado.
-                             </small>
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-12 gap-4">
-                        <div class="col-span-12">
-                            <label for="direccion" class="block font-bold mb-2">Dirección *</label>
-                            <textarea
-                                id="direccion"
-                                pInputText
-                                formControlName="direccion"
-                                placeholder="Ingrese la dirección completa"
-                                rows="3"
-                                [class.ng-invalid]="submitted && incomeForm.get('direccion')?.invalid"
-                                style="width: 100%; resize: vertical;"
-                            ></textarea>
-                            <small
-                                class="text-red-500"
-                                *ngIf="submitted && incomeForm.get('direccion')?.errors?.['required']"
-                            >
-                                La dirección es requerida.
-                            </small>
-                            <small
-                                class="text-red-500"
-                                *ngIf="submitted && incomeForm.get('direccion')?.errors?.['minlength']"
-                            >
-                                La dirección debe tener al menos 10 caracteres.
+                                El registrador es requerido.
                             </small>
                         </div>
                     </div>
