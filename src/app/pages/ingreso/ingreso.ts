@@ -222,7 +222,7 @@ function createUniqueValidator(
                              </small>
                              <small
                                  class="text-red-500"
-                                 *ngIf="incomeForm.get('patient')?.errors?.['unique']"
+                                 *ngIf="isEditMode===false && incomeForm.get('patient')?.errors?.['unique']"
                              >
                                  Este nombre del paciente ya está registrado.
                              </small>
@@ -549,7 +549,7 @@ export class Ingreso {
 
     updateValidatorsForEdit(excludeId?: string) {
         // Para edición, excluir el ID del ingreso actual
-        this.incomeForm.get('nombreCompleto')?.setAsyncValidators([
+        this.incomeForm.get('patient')?.setAsyncValidators([
             createUniqueValidator(this.incomeService.isNombreCompletoUnique.bind(this.incomeService), excludeId)
         ]);
     }
